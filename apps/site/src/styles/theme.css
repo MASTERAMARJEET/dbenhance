@@ -372,11 +372,15 @@ time {
 .section--muted {
   background: var(--color-surface);
   max-width: none;
+  padding-inline: 0;
 }
 
 .section--muted > * {
+  width: 100%;
   max-width: var(--layout-width);
   margin-inline: auto;
+  padding-inline: var(--space-5);
+  box-sizing: border-box;
 }
 
 .section__header {
@@ -391,11 +395,15 @@ time {
   background: #1a1212;
   color: #fff;
   max-width: none;
+  padding-inline: 0;
 }
 
 .section--dark > * {
+  width: 100%;
   max-width: var(--layout-width);
   margin-inline: auto;
+  padding-inline: var(--space-5);
+  box-sizing: border-box;
 }
 
 .section--dark h1,
@@ -409,7 +417,7 @@ time {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: var(--space-6) var(--space-5);
+  padding-block: var(--space-6);
   box-sizing: border-box;
 }
 
@@ -424,9 +432,6 @@ time {
   align-content: stretch;
   align-items: stretch;
   min-height: 0;
-  width: 100%;
-  max-width: var(--layout-width);
-  margin-inline: auto;
 }
 
 .section--services .visual-card {
@@ -448,31 +453,7 @@ time {
 
 .section--about {
   box-sizing: border-box;
-  max-height: calc(100svh - var(--header-height));
-  max-height: calc(100dvh - var(--header-height));
-  padding-block: var(--space-5);
-  overflow: hidden;
-}
-
-.section--about .split--visual {
-  min-height: 0;
-  max-height: calc(100svh - var(--header-height) - 2 * var(--space-5));
-  max-height: calc(100dvh - var(--header-height) - 2 * var(--space-5));
-}
-
-.section--about .split__media {
-  min-height: 0;
-  max-height: 28rem;
-}
-
-.section--about .split__media img {
-  object-position: center 30%;
-}
-
-@media (max-width: 767px) {
-  .section--about .split__media {
-    max-height: min(22rem, 42dvh);
-  }
+  padding-block: var(--space-6);
 }
 
 .section--dark .eyebrow.eyebrow--light {
@@ -1117,24 +1098,6 @@ time {
 
   .split--visual {
     grid-template-columns: 1fr 1fr;
-  }
-
-  .section--about {
-    display: flex;
-    align-items: center;
-    height: calc(100svh - var(--header-height));
-    height: calc(100dvh - var(--header-height));
-  }
-
-  .section--about .split--visual {
-    flex: 1;
-    width: 100%;
-    align-items: stretch;
-  }
-
-  .section--about .split__media {
-    max-height: none;
-    height: 100%;
   }
 
   .contact-grid {

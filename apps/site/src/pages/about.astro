@@ -4,7 +4,7 @@ import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
 import GalleryGrid from "../components/GalleryGrid.astro";
 import { getGalleryItems } from "../utils/social-content";
-import { getPageImage, getPageImageStack } from "../utils/site-media";
+import { getPageImage } from "../utils/site-media";
 
 const { entry: page, cacheHint: pageCacheHint } = await getEmDashEntry(
 	"pages",
@@ -18,8 +18,8 @@ if (Astro.cache?.enabled) {
 }
 
 const galleryItems = galleryResult.items.filter((item) => item.src);
-const aboutStack = getPageImageStack();
 const aboutHero = getPageImage("aboutHero");
+const aboutAside = getPageImage("aboutAside");
 ---
 
 <Base
@@ -60,12 +60,12 @@ const aboutHero = getPageImage("aboutHero");
 					</div>
 				)}
 			</div>
-			<div class="split__media split__media--stack">
-				{
-					aboutStack.map((image) => (
-						<img src={image.src} alt={image.alt} loading="lazy" />
-					))
-				}
+			<div class="split__media">
+				<img
+					src={aboutAside}
+					alt="Salon work at DB Enhance"
+					loading="lazy"
+				/>
 			</div>
 		</div>
 	</section>
