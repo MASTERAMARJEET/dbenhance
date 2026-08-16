@@ -16,6 +16,18 @@ pnpm dev
 
 The site runs at `http://localhost:4321`. Admin UI: `http://localhost:4321/_emdash/admin`.
 
+`pnpm dev` uses local D1 and R2 (empty until you add data). To run the same local code against production D1 and R2:
+
+```bash
+pnpm dev:remote
+```
+
+Stop `pnpm dev` first — both use port `4321`. Requires `wrangler login` or a `CLOUDFLARE_API_TOKEN`. Copy the production `EMDASH_ENCRYPTION_KEY` Worker secret into `apps/site/.dev.vars` so encrypted plugin secrets decrypt.
+
+**Writes go to production.** Admin edits, uploads, and deletes while `dev:remote` is running change live D1 and R2. Use ordinary `pnpm dev` when you want a sandbox.
+
+Do not run `wrangler deploy -e remote`. `dev:remote` is a local-only Wrangler environment.
+
 ## Build
 
 ```bash

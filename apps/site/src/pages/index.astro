@@ -92,7 +92,42 @@ const categoryCards = [
 		</div>
 	</section>
 
-	<section class="section">
+	<section class="section section--muted">
+		<div class="section__header">
+			<p class="eyebrow">Popular Services</p>
+			<h2>What clients love</h2>
+		</div>
+		<div class="visual-grid visual-grid--3">
+			{
+				featured.length > 0
+					? featured.map((service) => (
+							<VisualCard
+								href={`/services/${service!.data.slug}`}
+								image={getServiceImage(
+									service!.data.slug,
+									service!.data.category,
+								)}
+								title={service!.data.title}
+								description={
+									service!.data.excerpt ??
+									"Professional care tailored to you."
+								}
+								cta="View service →"
+							/>
+						))
+					: (
+							<p class="muted">
+								Service highlights will appear here once published.
+							</p>
+						)
+			}
+		</div>
+		<div class="section__footer">
+			<a class="btn btn--primary" href="/services">All services</a>
+		</div>
+	</section>
+
+	<section class="section section--about">
 		<div class="split split--visual">
 			<div class="split__media">
 				<img
@@ -131,41 +166,6 @@ const categoryCards = [
 			</section>
 		)
 	}
-
-	<section class="section section--muted">
-		<div class="section__header">
-			<p class="eyebrow">Popular Services</p>
-			<h2>What clients love</h2>
-		</div>
-		<div class="visual-grid visual-grid--3">
-			{
-				featured.length > 0
-					? featured.map((service) => (
-							<VisualCard
-								href={`/services/${service!.data.slug}`}
-								image={getServiceImage(
-									service!.data.slug,
-									service!.data.category,
-								)}
-								title={service!.data.title}
-								description={
-									service!.data.excerpt ??
-									"Professional care tailored to you."
-								}
-								cta="View service →"
-							/>
-						))
-					: (
-							<p class="muted">
-								Service highlights will appear here once published.
-							</p>
-						)
-			}
-		</div>
-		<div class="section__footer">
-			<a class="btn btn--primary" href="/services">All services</a>
-		</div>
-	</section>
 
 	{
 		displayGallery.length > 0 && (

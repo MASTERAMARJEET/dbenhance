@@ -18,6 +18,12 @@ const {
 } = Astro.props;
 
 const asset = typeof image === "string" ? { src: image, alt: title } : image;
+
+const MAX_DESCRIPTION = 80;
+const blurb =
+	description && description.length > MAX_DESCRIPTION
+		? `${description.slice(0, MAX_DESCRIPTION).replace(/\s+\S*$/, "")}…`
+		: description;
 ---
 
 <a class="visual-card" href={href}>
@@ -31,7 +37,7 @@ const asset = typeof image === "string" ? { src: image, alt: title } : image;
 	/>
 	<div class="visual-card__overlay">
 		<h3 class="visual-card__title">{title}</h3>
-		{description && <p class="visual-card__text">{description}</p>}
+		{blurb && <p class="visual-card__text">{blurb}</p>}
 		<span class="visual-card__cta">{cta}</span>
 	</div>
 </a>

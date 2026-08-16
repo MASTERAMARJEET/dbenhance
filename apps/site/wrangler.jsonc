@@ -22,5 +22,25 @@
       "binding": "MEDIA",
       "bucket_name": "dbenhance-media"
     }
-  ]
+  ],
+  "env": {
+    "remote": {
+      "routes": [],
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "dbenhance-site",
+          "database_id": "f32c1e39-7ee9-4bcc-9bee-27cb14178b35",
+          "remote": true
+        }
+      ],
+      "r2_buckets": [
+        {
+          "binding": "MEDIA",
+          "bucket_name": "dbenhance-media",
+          "remote": true
+        }
+      ]
+    }
+  }
 }

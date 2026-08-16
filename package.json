@@ -20,6 +20,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "dev:remote": "pnpm --filter site dev:remote",
     "deploy:site": "turbo run site#deploy",
     "clean": "rimraf **/node_modules **/.turbo **/dist **/.wrangler",
     "clean:install": "pnpm clean && pnpm install"

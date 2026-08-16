@@ -17,6 +17,7 @@ node_modules
 # EmDash local dev
 data.db
 uploads/
+.prod-sync/
 
 # Local content drafts and reference research (not committed)
 .content/

@@ -3,6 +3,7 @@ import { getEmDashEntry, decodeSlug } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../../layouts/Base.astro";
 import { getServiceCategoryLabel } from "../../utils/service-categories";
+import { prepareServiceContent } from "../../utils/service-content";
 import { getServiceImage } from "../../utils/site-media";
 
 const slug = decodeSlug(Astro.params.slug);
@@ -26,6 +27,11 @@ const category = service.data.category
 const heroImage = getServiceImage(
 	slug,
 	service.data.category as string | undefined,
+);
+
+const bodyContent = prepareServiceContent(
+	service.data.content,
+	service.data.excerpt,
 );
 ---
 
@@ -59,27 +65,31 @@ const heroImage = getServiceImage(
 		</div>
 	</section>
 
-	<article class="article article--with-sidebar">
-		<div class="article__body">
-			<PortableText value={service.data.content} />
-		</div>
-		<aside class="service-aside">
-			<img
-				class="service-aside__image"
-				src={heroImage.src}
-				alt={heroImage.alt}
-				style={
-					heroImage.position
-						? `object-position: ${heroImage.position}`
-						: undefined
-				}
-				loading="lazy"
-			/>
-			<div class="service-aside__cta">
-				<p>Interested in this service?</p>
-				<a class="btn btn--primary" href="/contact">Book an appointment</a>
-				<a class="text-link" href="/services">← All services</a>
+	<section class="service-detail">
+		<article class="article article--with-sidebar">
+			<div class="article__body service-content">
+				<p class="eyebrow">What's included</p>
+				<PortableText value={bodyContent} />
 			</div>
-		</aside>
-	</article>
+			<aside class="service-aside">
+				<img
+					class="service-aside__image"
+					src={heroImage.src}
+					alt={heroImage.alt}
+					style={
+						heroImage.position
+							? `object-position: ${heroImage.position}`
+							: undefined
+					}
+					loading="lazy"
+				/>
+				<div class="service-aside__cta">
+					<p class="service-aside__cta-label">Interested in this service?</p>
+					<a class="btn btn--primary" href="/contact">Book an appointment</a>
+					<a class="btn btn--secondary" href="tel:9043047266">Call 9043047266</a>
+					<a class="text-link" href="/services">← All services</a>
+				</div>
+			</aside>
+		</article>
+	</section>
 </Base>
