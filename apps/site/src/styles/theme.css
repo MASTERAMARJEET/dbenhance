@@ -887,23 +887,21 @@ time {
   width: 100%;
 }
 
-.article--with-sidebar {
+.article--with-sidebar,
+.article.article--with-sidebar {
   display: grid;
-  gap: var(--space-8);
+  gap: var(--space-6) var(--space-8);
   max-width: var(--layout-width);
   margin: 0 auto;
-  padding: var(--space-8) var(--space-5);
+  padding: var(--space-6) var(--space-5) var(--space-8);
 }
 
 .service-detail {
   background: var(--color-bg);
 }
 
-.service-detail .article--with-sidebar {
-  padding-block: var(--space-6);
-}
-
 .service-content {
+  min-width: 0;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: calc(var(--radius) * 2);
@@ -935,21 +933,36 @@ time {
   list-style: none;
   padding: 0;
   margin: 0 0 var(--space-5);
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: var(--space-2);
 }
 
-.service-content li {
-  display: inline-flex;
+.service-content ul li {
+  display: flex;
   align-items: center;
-  padding: 0.45rem 0.85rem;
+  padding: 0.5rem 0.85rem;
   border: 1px solid var(--color-border);
-  border-radius: 999px;
+  border-radius: var(--radius);
   background: var(--color-bg);
   font-size: 0.875rem;
   line-height: 1.35;
   color: var(--color-text);
+}
+
+.service-content ol {
+  margin: 0 0 var(--space-5);
+  padding-left: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.service-content ol li {
+  padding-left: var(--space-2);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: var(--color-muted);
 }
 
 .service-aside {
@@ -1133,8 +1146,9 @@ time {
     grid-template-columns: 1.4fr 0.8fr;
   }
 
-  .article--with-sidebar {
-    grid-template-columns: minmax(0, 1fr) 18rem;
+  .article--with-sidebar,
+  .article.article--with-sidebar {
+    grid-template-columns: minmax(0, 1.85fr) minmax(16rem, 20rem);
     align-items: start;
   }
 
@@ -1217,6 +1231,10 @@ time {
 
 .article {
   max-width: var(--content-width);
+}
+
+.article.article--with-sidebar {
+  max-width: var(--layout-width);
 }
 
 .article img {
@@ -1430,5 +1448,14 @@ time {
 
   .gallery-grid__item--tall {
     grid-row: span 1;
+  }
+
+  .service-content ul {
+    grid-template-columns: 1fr;
+  }
+
+  .article--with-sidebar,
+  .article.article--with-sidebar {
+    padding-inline: var(--space-4);
   }
 }
