@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "emdash-docs": {
+      "type": "http",
+      "url": "https://docs.emdashcms.com/mcp"
+    },
+    "dbenhance": {
+      "command": "${workspaceFolder}/node_modules/.bin/mcp-remote",
+      "args": [
+        "https://dbenhance.com/_emdash/api/mcp",
+        "--transport",
+        "http-only"
+      ]
+    }
+  }
+}
