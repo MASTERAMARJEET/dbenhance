@@ -8,6 +8,7 @@ import {
 import { createPublicPageContext } from "emdash/page";
 import LiveSearch from "emdash/ui/search";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
+import { INSTAGRAM_PROFILE } from "../utils/site-media";
 import "../styles/theme.css";
 
 interface Props {
@@ -16,11 +17,12 @@ interface Props {
 	description?: string | null;
 	image?: string | null;
 	canonical?: string | null;
+	fullWidth?: boolean;
 	/** Pass content reference for plugin page contributions on content pages */
 	content?: { collection: string; id: string; slug?: string | null };
 }
 
-const { title, pageTitle, description, image, canonical, content } = Astro.props;
+const { title, pageTitle, description, image, canonical, fullWidth = false, content } = Astro.props;
 const { siteTitle, siteTagline, siteLogo } = resolveStarterSiteIdentity(await getSiteSettings());
 const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}`;
 const pageDescription = description ?? siteTagline;
@@ -78,17 +80,42 @@ const pageCtx = createPublicPageContext({
 					class="site-search"
 					inputClass="site-search-input"
 					placeholder="Search..."
-					collections={["posts", "pages"]}
+					collections={["pages", "services"]}
 				/>
 			</nav>
 		</header>
 
-		<main class="site-main">
+		<main class:list={["site-main", fullWidth && "site-main--full"]}>
 			<slot />
 		</main>
 
 		<footer class="site-footer">
-			<p>{siteTitle}{siteTagline ? ` — ${siteTagline}` : ""}</p>
+			<div class="site-footer__inner">
+				<div>
+					<p class="site-footer__brand">{siteTitle}</p>
+					<p class="site-footer__tagline">{siteTagline ?? "The Unisex Salon"}</p>
+				</div>
+				<div class="site-footer__contact">
+					<p>
+						S3, 2nd Floor, Godrej Azure Elsa Plaza<br />
+						Rajiv Gandhi Salai, Padur, Chennai – 603103
+					</p>
+					<p>
+						<a href="tel:9043047266">9043047266</a> ·
+						<a href="mailto:contact@dbenhance.com">contact@dbenhance.com</a>
+					</p>
+				</div>
+				<div class="site-footer__hours">
+					<p>Mon–Fri: 10 AM – 9 PM</p>
+					<p>Sat–Sun: 9 AM – 9 PM</p>
+					<p>
+						<a href={INSTAGRAM_PROFILE} target="_blank" rel="noopener noreferrer">
+							@dbenhance on Instagram
+						</a>
+					</p>
+				</div>
+			</div>
+			<p class="site-footer__copy">© {new Date().getFullYear()} {siteTitle}</p>
 		</footer>
 
 		<EmDashBodyEnd page={pageCtx} />

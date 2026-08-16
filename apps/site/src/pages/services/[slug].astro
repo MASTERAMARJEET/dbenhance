@@ -1,0 +1,85 @@
+---
+import { getEmDashEntry, decodeSlug } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+import { getServiceCategoryLabel } from "../../utils/service-categories";
+import { getServiceImage } from "../../utils/site-media";
+
+const slug = decodeSlug(Astro.params.slug);
+
+if (!slug) {
+	return Astro.redirect("/404");
+}
+
+const { entry: service, cacheHint } = await getEmDashEntry("services", slug);
+
+if (!service) {
+	return Astro.redirect("/404");
+}
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const category = service.data.category
+	? getServiceCategoryLabel(service.data.category)
+	: null;
+
+const heroImage = getServiceImage(
+	slug,
+	service.data.category as string | undefined,
+);
+---
+
+<Base
+	title={service.data.title}
+	description={service.data.excerpt ?? `${service.data.title} at DB Enhance`}
+	image={heroImage.src}
+	content={{ collection: "services", id: service.data.id, slug: slug ?? undefined }}
+	fullWidth
+>
+	<section class="page-hero page-hero--visual page-hero--short">
+		<img
+			class="page-hero__bg"
+			src={heroImage.src}
+			alt={heroImage.alt}
+			style={
+				heroImage.position
+					? `object-position: ${heroImage.position}`
+					: undefined
+			}
+		/>
+		<div class="page-hero__scrim" />
+		<div class="page-hero__content">
+			{category && <p class="eyebrow eyebrow--light">{category}</p>}
+			<h1 {...service.edit.title}>{service.data.title}</h1>
+			{
+				service.data.excerpt && (
+					<p class="page-hero__lead">{service.data.excerpt}</p>
+				)
+			}
+		</div>
+	</section>
+
+	<article class="article article--with-sidebar">
+		<div class="article__body">
+			<PortableText value={service.data.content} />
+		</div>
+		<aside class="service-aside">
+			<img
+				class="service-aside__image"
+				src={heroImage.src}
+				alt={heroImage.alt}
+				style={
+					heroImage.position
+						? `object-position: ${heroImage.position}`
+						: undefined
+				}
+				loading="lazy"
+			/>
+			<div class="service-aside__cta">
+				<p>Interested in this service?</p>
+				<a class="btn btn--primary" href="/contact">Book an appointment</a>
+				<a class="text-link" href="/services">← All services</a>
+			</div>
+		</aside>
+	</article>
+</Base>

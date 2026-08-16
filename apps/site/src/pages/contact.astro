@@ -1,0 +1,89 @@
+---
+import Base from "../layouts/Base.astro";
+import { getPageImage } from "../utils/site-media";
+
+const contactHero = getPageImage("contactHero");
+const contactAside = getPageImage("contactAside");
+---
+
+<Base
+	title="Contact"
+	description="Get in touch with DB Enhance salon in Padur, Chennai. Call 9043047266 or email contact@dbenhance.com to book hair, nail, or beauty services."
+	fullWidth
+	image={contactHero}
+>
+	<section class="page-hero page-hero--visual page-hero--short">
+		<img
+			class="page-hero__bg"
+			src={contactHero}
+			alt=""
+		/>
+		<div class="page-hero__scrim" />
+		<div class="page-hero__content">
+			<p class="eyebrow eyebrow--light">Get in touch</p>
+			<h1>Contact Us</h1>
+			<p class="page-hero__lead">
+				Book an appointment, ask about services, or enquire about bridal and
+				package options.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="contact-layout">
+			<div class="contact-grid">
+				<section class="contact-card">
+					<h2>Visit us</h2>
+					<p>
+						<strong>DB Enhance — The Unisex Salon</strong><br />
+						S3, 2nd Floor, Godrej Azure Elsa Plaza<br />
+						No. 2, Rajiv Gandhi Salai, Padur<br />
+						Chennai – 603103
+					</p>
+				</section>
+
+				<section class="contact-card">
+					<h2>Call or email</h2>
+					<p>
+						<a href="tel:9043047266">9043047266</a><br />
+						<a href="tel:04435642646">044-35642646</a><br />
+						<a href="mailto:contact@dbenhance.com">contact@dbenhance.com</a>
+					</p>
+				</section>
+
+				<section class="contact-card">
+					<h2>Opening hours</h2>
+					<ul class="hours-list">
+						<li><span>Monday – Friday</span><span>10:00 AM – 9:00 PM</span></li>
+						<li><span>Saturday & Sunday</span><span>9:00 AM – 9:00 PM</span></li>
+					</ul>
+				</section>
+			</div>
+
+			<div class="contact-layout__visual">
+				<img
+					src={contactAside}
+					alt="DB Enhance salon"
+					loading="lazy"
+				/>
+			</div>
+		</div>
+	</section>
+
+	<section class="section section--muted">
+		<div class="contact-note">
+			<p>
+				Bridal and special packages may include outdoor service. Ask us for
+				details when booking.
+			</p>
+			<a
+				class="btn btn--primary"
+				href="https://maps.google.com/?q=Godrej+Azure+Elsa+Plaza+Padur+Chennai"
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				Open in Google Maps
+			</a>
+		</div>
+	</section>
+</Base>

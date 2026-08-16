@@ -1,12 +1,202 @@
 ---
+import { getEmDashCollection } from "emdash";
 import Base from "../layouts/Base.astro";
+import GalleryGrid from "../components/GalleryGrid.astro";
+import ReelStrip from "../components/ReelStrip.astro";
+import VisualCard from "../components/VisualCard.astro";
+import { SERVICE_CATEGORIES } from "../utils/service-categories";
+import { getFeaturedReels, getGalleryItems } from "../utils/social-content";
+import {
+	CATEGORY_IMAGES,
+	HERO_IMAGE,
+	HERO_MOSAIC,
+	INSTAGRAM_PROFILE,
+	getPageImage,
+	getServiceImage,
+} from "../utils/site-media";
+
+const { entries: services } = await getEmDashCollection("services", {
+	status: "published",
+	limit: 100,
+});
+
+const [featuredReels, galleryItems] = await Promise.all([
+	getFeaturedReels(),
+	getGalleryItems(),
+]);
+
+const displayReels = featuredReels.filter(
+	(reel) => reel.posterSrc || reel.videoSrc,
+);
+const displayGallery = galleryItems.filter((item) => item.src);
+
+const featuredSlugs = [
+	"hair-cuts-styling",
+	"hair-colouring",
+	"hair-bonding",
+	"hair-spa-treatments",
+	"acrylic-extension",
+	"manicure-pedicure",
+	"facials-cleanups",
+	"makeup-bridal",
+];
+
+const featured = featuredSlugs
+	.map((slug) => services.find((s) => s.data.slug === slug))
+	.filter(Boolean);
+
+const categoryCards = [
+	{ key: "salon-hair" as const, href: "/services/hair-cuts-styling" },
+	{ key: "hair-fixing" as const, href: "/services/hair-bonding" },
+	{ key: "nail" as const, href: "/services/manicure-pedicure" },
+	{ key: "skin" as const, href: "/services/facials-cleanups" },
+] as const;
 ---
 
-<Base title="DB Enhance">
-	<div class="hero">
-		<h1 class="hero__title">Welcome to DB Enhance</h1>
-		<p class="hero__text">
-			This website is under construction. Please visit us after a few months.
-		</p>
-	</div>
+<Base
+	title="DB Enhance — Hair, Nail & Salon in Padur, Chennai"
+	description="DB Enhance is a unisex salon offering hair styling, non-surgical hair fixing, nail art, facials, waxing, and bridal packages. Book your appointment today."
+	fullWidth
+	image={HERO_IMAGE}
+>
+	<section class="hero hero--mosaic" aria-label="DB Enhance salon work">
+		{
+			HERO_MOSAIC.map((asset) => (
+				<img
+					src={asset.src}
+					alt={asset.alt}
+					style={asset.position ? `object-position: ${asset.position}` : undefined}
+					loading="eager"
+					decoding="async"
+				/>
+			))
+		}
+	</section>
+
+	<section class="section section--dark section--services">
+		<div class="section__header section__header--light">
+			<p class="eyebrow eyebrow--light">What We Offer</p>
+			<h1>Services for every need</h1>
+		</div>
+		<div class="visual-grid visual-grid--2">
+			{
+				categoryCards.map(({ key, href }) => (
+					<VisualCard
+						href={href}
+						image={CATEGORY_IMAGES[key]}
+						title={SERVICE_CATEGORIES[key].label}
+						description={SERVICE_CATEGORIES[key].description}
+					/>
+				))
+			}
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="split split--visual">
+			<div class="split__media">
+				<img
+					src={getPageImage("aboutSplit")}
+					alt="Hair transformation at DB Enhance"
+					loading="lazy"
+					decoding="async"
+				/>
+			</div>
+			<div class="split__content">
+				<p class="eyebrow">About DB Enhance</p>
+				<h2>Look and feel your best</h2>
+				<p>
+					Expert hair artists, nail technicians, and skin care specialists —
+					delivering precision cuts, creative colour, non-surgical hair fixing,
+					and polished nail care with genuine attention to detail.
+				</p>
+				<a class="btn btn--secondary" href="/about">About us</a>
+			</div>
+		</div>
+	</section>
+
+	{
+		displayReels.length > 0 && (
+			<section class="section">
+				<div class="section__header section__header--split">
+					<div>
+						<p class="eyebrow">Watch & Explore</p>
+						<h2>Latest from the salon</h2>
+					</div>
+					<a class="text-link" href={INSTAGRAM_PROFILE} target="_blank" rel="noopener noreferrer">
+						@dbenhance on Instagram →
+					</a>
+				</div>
+				<ReelStrip reels={displayReels} />
+			</section>
+		)
+	}
+
+	<section class="section section--muted">
+		<div class="section__header">
+			<p class="eyebrow">Popular Services</p>
+			<h2>What clients love</h2>
+		</div>
+		<div class="visual-grid visual-grid--3">
+			{
+				featured.length > 0
+					? featured.map((service) => (
+							<VisualCard
+								href={`/services/${service!.data.slug}`}
+								image={getServiceImage(
+									service!.data.slug,
+									service!.data.category,
+								)}
+								title={service!.data.title}
+								description={
+									service!.data.excerpt ??
+									"Professional care tailored to you."
+								}
+								cta="View service →"
+							/>
+						))
+					: (
+							<p class="muted">
+								Service highlights will appear here once published.
+							</p>
+						)
+			}
+		</div>
+		<div class="section__footer">
+			<a class="btn btn--primary" href="/services">All services</a>
+		</div>
+	</section>
+
+	{
+		displayGallery.length > 0 && (
+			<section class="section">
+				<div class="section__header section__header--split">
+					<div>
+						<p class="eyebrow">Gallery</p>
+						<h2>Transformations & finishes</h2>
+					</div>
+					<a class="text-link" href="/gallery">View full gallery →</a>
+				</div>
+				<GalleryGrid items={displayGallery} limit={8} />
+			</section>
+		)
+	}
+
+	<section class="cta-band cta-band--visual">
+		<img
+			class="cta-band__bg"
+			src={getPageImage("ctaBand")}
+			alt=""
+			loading="lazy"
+		/>
+		<div class="cta-band__scrim" />
+		<div class="cta-band__inner">
+			<h2>Ready for a fresh look?</h2>
+			<p>Call us or visit our salon on Rajiv Gandhi Salai. Walk-ins welcome.</p>
+			<div class="hero__actions">
+				<a class="btn btn--light" href="/contact">Contact Us</a>
+				<a class="btn btn--ghost-light" href="tel:9043047266">9043047266</a>
+			</div>
+		</div>
+	</section>
 </Base>

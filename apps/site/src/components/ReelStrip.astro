@@ -1,0 +1,75 @@
+---
+import type { ReelCard } from "../utils/social-content";
+import { INSTAGRAM_PROFILE } from "../utils/site-media";
+
+interface Props {
+	reels: ReelCard[];
+}
+
+const { reels } = Astro.props;
+---
+
+{
+	reels.length > 0 && (
+		<section class="reel-strip" aria-label="Featured salon reels">
+			<div class="reel-strip__track">
+				{
+					reels.map((reel) => (
+						<figure class="reel-card">
+							{reel.videoSrc ? (
+								<video
+									class="reel-card__video"
+									src={reel.videoSrc}
+									poster={reel.posterSrc}
+									muted
+									loop
+									playsinline
+									preload="metadata"
+								/>
+							) : reel.posterSrc ? (
+								<img
+									class="reel-card__video"
+									src={reel.posterSrc}
+									alt={reel.title}
+									loading="lazy"
+									decoding="async"
+								/>
+							) : (
+								<div class="reel-card__placeholder">{reel.title}</div>
+							)}
+						</figure>
+					))
+				}
+			</div>
+			<p class="reel-strip__follow">
+				<a href={INSTAGRAM_PROFILE} target="_blank" rel="noopener noreferrer">
+					Follow @dbenhance on Instagram →
+				</a>
+			</p>
+		</section>
+	)
+}
+
+<script>
+	const videos = document.querySelectorAll<HTMLVideoElement>(".reel-card__video");
+
+	const observer = new IntersectionObserver(
+		(entries) => {
+			for (const entry of entries) {
+				const video = entry.target as HTMLVideoElement;
+				if (video.tagName !== "VIDEO") continue;
+				if (entry.isIntersecting) {
+					video.play().catch(() => {});
+				} else {
+					video.pause();
+				}
+			}
+		},
+		{ threshold: 0.6 },
+	);
+
+	for (const video of videos) {
+		observer.observe(video);
+		video.addEventListener("mouseenter", () => video.play().catch(() => {}));
+	}
+</script>

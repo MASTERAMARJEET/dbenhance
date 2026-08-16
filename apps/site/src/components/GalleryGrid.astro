@@ -1,0 +1,53 @@
+---
+import type { GalleryCard } from "../utils/social-content";
+
+interface Props {
+	items: GalleryCard[];
+	limit?: number;
+	class?: string;
+}
+
+const { items, limit, class: className } = Astro.props;
+const visible = (limit ? items.slice(0, limit) : items).filter((item) => item.src);
+---
+
+{
+	visible.length > 0 && (
+		<ul class:list={["gallery-grid", className]}>
+			{
+				visible.map((item, index) => (
+					<li
+						class:list={[
+							"gallery-grid__item",
+							index % 7 === 0 && "gallery-grid__item--wide",
+							index % 5 === 2 && "gallery-grid__item--tall",
+						]}
+					>
+						<a
+							href={item.href}
+							target="_blank"
+							rel="noopener noreferrer"
+							class="gallery-grid__link"
+						>
+							<img
+								src={item.src}
+								alt={item.alt}
+								loading="lazy"
+								decoding="async"
+								width="600"
+								height="600"
+							/>
+							{item.isVideo && (
+								<span class="gallery-grid__badge" aria-hidden="true">
+									<svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+										<path d="M8 5v14l11-7z" />
+									</svg>
+								</span>
+							)}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	)
+}

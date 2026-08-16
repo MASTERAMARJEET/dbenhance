@@ -1,0 +1,60 @@
+{
+  "hero": {
+    "og": "/_emdash/api/media/file/01M053KK848CPPZYH5MSJMK9J1.jpg",
+    "mosaic": [
+      {
+        "shortcode": "Da5NrCOpCUo",
+        "position": "center 25%",
+        "alt": "Hair styling at DB Enhance"
+      },
+      {
+        "shortcode": "DaNfCvWJu6K",
+        "position": "center center",
+        "alt": "Salon styling at DB Enhance"
+      },
+      {
+        "shortcode": "DbQaOGppSXo",
+        "position": "center 30%",
+        "alt": "Hair fixing at DB Enhance"
+      },
+      {
+        "shortcode": "DbIq3RrJIsY",
+        "position": "center 35%",
+        "alt": "Hair transformation at DB Enhance"
+      }
+    ]
+  },
+  "pages": {
+    "aboutHero": "Dbm0RX2p2f3",
+    "aboutStack": [
+      "Da5NrCOpCUo",
+      "DaK3dzwpNgr"
+    ],
+    "galleryHero": "DbQaOGppSXo",
+    "contactHero": "Da5Ng9RprOo",
+    "contactAside": "DaH5QuXJIgg",
+    "servicesHero": "DaNfCvWJu6K",
+    "aboutSplit": "DbIq3RrJIsY",
+    "ctaBand": "DaDIkeWJE44"
+  },
+  "services": {
+    "salon-hair": "/_emdash/api/media/file/01M053MXQS94REWAJJETHHAJ55.jpg",
+    "hair-fixing": "/_emdash/api/media/file/01M053N0HT0F23JACSC716WK43.jpg",
+    "nail-art": "_emdash/api/media/file/01M059D8PA1XM1DFNRY4YPH7AH.01M059DBAQKZ0DAB0Q4H0AYBN8.jpg",
+    "nail-manicure": "/_emdash/api/media/file/01M0563WCC8AB4J40RN80V8PNH.jpg",
+    "skin-facial": "/_emdash/api/media/file/01M0566495JE7GX621V4MEM95K.jpg",
+    "grooming-bridal": "/_emdash/api/media/file/01M053NG7BK0KXYXTRSNMZNZSM.jpg"
+  },
+  "instagram": {
+    "Dbm0RX2p2f3": "/_emdash/api/media/file/01M053KEP7FN27M8C96Y4KMJB5.jpg",
+    "DbQaOGppSXo": "/_emdash/api/media/file/01M053KGHB0580CEZQ7JVD8EN1.jpg",
+    "DbIq3RrJIsY": "/_emdash/api/media/file/01M053KHYN5DTGE31RSHRPGE2C.jpg",
+    "Da5NrCOpCUo": "/_emdash/api/media/file/01M053KK848CPPZYH5MSJMK9J1.jpg",
+    "Da5Ng9RprOo": "/_emdash/api/media/file/01M053MAAE8N2YXCAAB0904W5X.jpg",
+    "DaNfCvWJu6K": "/_emdash/api/media/file/01M053MFRK2Q9JG8FBG30B3TV8.jpg",
+    "DaK3dzwpNgr": "/_emdash/api/media/file/01M053MJHQJG5XF9THAA7DMJTM.jpg",
+    "DaH5QuXJIgg": "/_emdash/api/media/file/01M053MNBMYSX2FERR5A1RBWRE.jpg",
+    "DaDIkeWJE44": "/_emdash/api/media/file/01M053MR3RPS3PWP1HY82YW5KP.jpg",
+    "DaAockypFYT": "/_emdash/api/media/file/01M053MV1GF05XCW4Y3CGDCR7D.jpg"
+  }
+}

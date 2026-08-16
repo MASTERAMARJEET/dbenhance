@@ -1,0 +1,77 @@
+---
+import { getEmDashEntry } from "emdash";
+import { PortableText } from "emdash/ui";
+import Base from "../layouts/Base.astro";
+import GalleryGrid from "../components/GalleryGrid.astro";
+import { getGalleryItems } from "../utils/social-content";
+import { getPageImage, getPageImageStack } from "../utils/site-media";
+
+const { entry: page } = await getEmDashEntry("pages", "about");
+const galleryItems = (await getGalleryItems(6)).filter((item) => item.src);
+const aboutStack = getPageImageStack();
+const aboutHero = getPageImage("aboutHero");
+---
+
+<Base
+	title="About"
+	description="Learn about DB Enhance, a full-service unisex salon in Padur, Chennai offering salon hair care, hair fixing, nail art, skin, and grooming services."
+	image={aboutHero}
+	fullWidth
+	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
+>
+	<section class="page-hero page-hero--visual page-hero--short">
+		<img
+			class="page-hero__bg"
+			src={aboutHero}
+			alt=""
+		/>
+		<div class="page-hero__scrim" />
+		<div class="page-hero__content">
+			<p class="eyebrow eyebrow--light">DB Enhance</p>
+			<h1 {...page?.edit.title}>{page?.data.title ?? "About Us"}</h1>
+			<p class="page-hero__lead">
+				The Unisex Salon — your neighbourhood destination for complete personal
+				care in Padur, Chennai.
+			</p>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="split split--visual">
+			<div class="split__content">
+				{page?.data.content ? (
+					<PortableText value={page.data.content} />
+				) : (
+					<div class="article__body">
+						<p>
+							DB Enhance — The Unisex Salon — is your neighbourhood destination
+							for complete personal care in Padur, Chennai.
+						</p>
+					</div>
+				)}
+			</div>
+			<div class="split__media split__media--stack">
+				{
+					aboutStack.map((image) => (
+						<img src={image.src} alt={image.alt} loading="lazy" />
+					))
+				}
+			</div>
+		</div>
+	</section>
+
+	{
+		galleryItems.length > 0 && (
+			<section class="section section--muted">
+				<div class="section__header">
+					<p class="eyebrow">Our Work</p>
+					<h2>See what we create</h2>
+				</div>
+				<GalleryGrid items={galleryItems} />
+				<div class="section__footer">
+					<a class="btn btn--secondary" href="/gallery">Full gallery</a>
+				</div>
+			</section>
+		)
+	}
+</Base>

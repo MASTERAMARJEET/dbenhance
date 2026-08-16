@@ -18,6 +18,9 @@ node_modules
 data.db
 uploads/
 
+# Local content drafts and reference research (not committed)
+.content/
+
 # IDEs and editors
 /.idea
 .project

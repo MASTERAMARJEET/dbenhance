@@ -7,15 +7,20 @@
 		"author": "EmDash"
 	},
 	"settings": {
-		"title": "My Site",
-		"tagline": "Built with EmDash"
+		"title": "DB Enhance",
+		"tagline": "Hair | Nail | Salon"
 	},
 	"collections": [
 		{
 			"slug": "posts",
 			"label": "Posts",
 			"labelSingular": "Post",
-			"supports": ["drafts", "revisions", "search", "seo"],
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
 			"fields": [
 				{
 					"slug": "title",
@@ -47,7 +52,11 @@
 			"label": "Pages",
 			"labelSingular": "Page",
 			"urlPattern": "/{slug}",
-			"supports": ["drafts", "revisions", "search"],
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
 			"fields": [
 				{
 					"slug": "title",
@@ -63,6 +72,140 @@
 					"searchable": true
 				}
 			]
+		},
+		{
+			"slug": "services",
+			"label": "Services",
+			"labelSingular": "Service",
+			"urlPattern": "/services/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "category",
+					"label": "Category",
+					"type": "select",
+					"required": true,
+					"validation": {
+						"options": [
+							"salon-hair",
+							"hair-fixing",
+							"nail",
+							"skin",
+							"grooming"
+						]
+					}
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		},
+		{
+			"slug": "featured_reels",
+			"label": "Featured Reels",
+			"labelSingular": "Featured Reel",
+			"description": "Instagram reels for Watch & Explore sections",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "link",
+					"label": "Instagram Link",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "thumbnail",
+					"label": "Poster Image",
+					"type": "image"
+				},
+				{
+					"slug": "video",
+					"label": "Video File",
+					"type": "file"
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "integer",
+					"defaultValue": 0
+				}
+			]
+		},
+		{
+			"slug": "gallery_items",
+			"label": "Gallery Items",
+			"labelSingular": "Gallery Item",
+			"description": "Instagram posts for gallery sections",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "link",
+					"label": "Instagram Link",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "thumbnail",
+					"label": "Thumbnail",
+					"type": "image"
+				},
+				{
+					"slug": "is_video",
+					"label": "Is Video",
+					"type": "boolean",
+					"defaultValue": false
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "integer",
+					"defaultValue": 0
+				}
+			]
 		}
 	],
 	"taxonomies": [
@@ -71,7 +214,9 @@
 			"label": "Categories",
 			"labelSingular": "Category",
 			"hierarchical": true,
-			"collections": ["posts"],
+			"collections": [
+				"posts"
+			],
 			"terms": [
 				{
 					"slug": "general",
@@ -88,7 +233,9 @@
 			"label": "Tags",
 			"labelSingular": "Tag",
 			"hierarchical": false,
-			"collections": ["posts"],
+			"collections": [
+				"posts"
+			],
 			"terms": [
 				{
 					"slug": "starter",
@@ -113,13 +260,18 @@
 				},
 				{
 					"type": "custom",
-					"label": "Posts",
-					"url": "/posts"
+					"label": "Services",
+					"url": "/services"
 				},
 				{
 					"type": "custom",
 					"label": "About",
 					"url": "/about"
+				},
+				{
+					"type": "custom",
+					"label": "Contact",
+					"url": "/contact"
 				}
 			]
 		}
@@ -224,8 +376,13 @@
 					]
 				},
 				"taxonomies": {
-					"category": ["general"],
-					"tag": ["starter", "example"]
+					"category": [
+						"general"
+					],
+					"tag": [
+						"starter",
+						"example"
+					]
 				}
 			}
 		]

@@ -1,0 +1,110 @@
+---
+import { getEmDashCollection } from "emdash";
+import Base from "../../layouts/Base.astro";
+import VisualCard from "../../components/VisualCard.astro";
+import {
+	SERVICE_CATEGORY_ORDER,
+	SERVICE_CATEGORIES,
+} from "../../utils/service-categories";
+import { CATEGORY_IMAGES, getPageImage, getServiceImage } from "../../utils/site-media";
+
+const servicesHero = getPageImage("servicesHero");
+
+const { entries: services } = await getEmDashCollection("services", {
+	status: "published",
+	limit: 100,
+});
+
+const grouped = Object.fromEntries(
+	SERVICE_CATEGORY_ORDER.map((key) => [
+		key,
+		services.filter((s) => s.data.category === key),
+	]),
+);
+---
+
+<Base
+	title="Services"
+	description="Explore DB Enhance services — salon hair care, non-surgical hair fixing, nail art, facials, waxing, makeup, and bridal packages in Padur, Chennai."
+	fullWidth
+	image={servicesHero}
+>
+	<section class="page-hero page-hero--visual page-hero--short">
+		<img
+			class="page-hero__bg"
+			src={servicesHero}
+			alt=""
+		/>
+		<div class="page-hero__scrim" />
+		<div class="page-hero__content">
+			<p class="eyebrow eyebrow--light">DB Enhance</p>
+			<h1>Our Services</h1>
+			<p class="page-hero__lead">
+				Salon hair, hair fixing, nails, skin, and grooming — call us for
+				details and appointments.
+			</p>
+		</div>
+	</section>
+
+	{
+		SERVICE_CATEGORY_ORDER.map((key) => {
+			const items = grouped[key];
+			if (!items?.length) return null;
+			return (
+				<section class="section service-category-section">
+					<div class="split split--visual split--reverse">
+						<div class="split__media split__media--tall">
+							<img
+								src={CATEGORY_IMAGES[key].src}
+								alt={CATEGORY_IMAGES[key].alt}
+								style={
+									CATEGORY_IMAGES[key].position
+										? `object-position: ${CATEGORY_IMAGES[key].position}`
+										: undefined
+								}
+								loading="lazy"
+								decoding="async"
+							/>
+						</div>
+						<div class="split__content">
+							<p class="eyebrow">{SERVICE_CATEGORIES[key].label}</p>
+							<h2>{SERVICE_CATEGORIES[key].label}</h2>
+							<p>{SERVICE_CATEGORIES[key].description}</p>
+							<div class="service-chip-list">
+								{items.map((service) => (
+									<a
+										class="service-chip"
+										href={`/services/${service.data.slug}`}
+									>
+										<span {...service.edit.title}>{service.data.title}</span>
+									</a>
+								))}
+							</div>
+						</div>
+					</div>
+					<div class="visual-grid visual-grid--3">
+						{items.slice(0, 3).map((service) => (
+							<VisualCard
+								href={`/services/${service.data.slug}`}
+								image={getServiceImage(
+									service.data.slug,
+									service.data.category,
+								)}
+								title={service.data.title}
+								description={service.data.excerpt}
+								cta="View service →"
+							/>
+						))}
+					</div>
+				</section>
+			);
+		})
+	}
+
+	<section class="section">
+		<div class="cta-inline">
+			<p>Questions about a service? We're happy to help.</p>
+			<a class="btn btn--primary" href="/contact">Get in touch</a>
+		</div>
+	</section>
+</Base>
