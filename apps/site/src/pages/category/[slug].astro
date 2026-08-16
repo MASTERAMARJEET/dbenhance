@@ -10,10 +10,12 @@ if (!term) {
 	return Astro.redirect("/404");
 }
 
-const { entries: posts } = await getEmDashCollection("posts", {
+const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 	where: { category: term.slug },
 	orderBy: { published_at: "desc" },
 });
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 ---
 
 <Base title={`${term.label} posts`} description={`Posts in ${term.label}`}>

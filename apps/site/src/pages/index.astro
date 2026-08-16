@@ -15,15 +15,25 @@ import {
 	getServiceImage,
 } from "../utils/site-media";
 
-const { entries: services } = await getEmDashCollection("services", {
+const { entries: services, cacheHint: servicesCacheHint } =
+	await getEmDashCollection("services", {
 	status: "published",
 	limit: 100,
 });
 
-const [featuredReels, galleryItems] = await Promise.all([
+const [featuredReelsResult, galleryItemsResult] = await Promise.all([
 	getFeaturedReels(),
 	getGalleryItems(),
 ]);
+
+if (Astro.cache?.enabled) {
+	Astro.cache.set(servicesCacheHint);
+	Astro.cache.set(featuredReelsResult.cacheHint);
+	Astro.cache.set(galleryItemsResult.cacheHint);
+}
+
+const featuredReels = featuredReelsResult.reels;
+const galleryItems = galleryItemsResult.items;
 
 const displayReels = featuredReels.filter(
 	(reel) => reel.posterSrc || reel.videoSrc,

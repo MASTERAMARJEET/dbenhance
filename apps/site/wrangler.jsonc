@@ -6,6 +6,15 @@
   "placement": {
     "mode": "smart"
   },
+  "cache": {
+    "enabled": true
+  },
+  "kv_namespaces": [
+    {
+      "binding": "CACHE",
+      "id": "68178f00cd6546069cbe18161da385f6"
+    }
+  ],
   "workers_dev": false,
   "routes": [
     { "pattern": "dbenhance.com", "custom_domain": true },
@@ -38,6 +47,13 @@
         {
           "binding": "MEDIA",
           "bucket_name": "dbenhance-media",
+          "remote": true
+        }
+      ],
+      "kv_namespaces": [
+        {
+          "binding": "CACHE",
+          "id": "68178f00cd6546069cbe18161da385f6",
           "remote": true
         }
       ]

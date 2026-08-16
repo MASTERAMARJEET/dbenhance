@@ -7,10 +7,18 @@ import { INSTAGRAM_PROFILE, getPageImage } from "../utils/site-media";
 
 const galleryHero = getPageImage("galleryHero");
 
-const [featuredReels, galleryItems] = await Promise.all([
+const [featuredReelsResult, galleryItemsResult] = await Promise.all([
 	getFeaturedReels(),
 	getGalleryItems(),
 ]);
+
+if (Astro.cache?.enabled) {
+	Astro.cache.set(featuredReelsResult.cacheHint);
+	Astro.cache.set(galleryItemsResult.cacheHint);
+}
+
+const featuredReels = featuredReelsResult.reels;
+const galleryItems = galleryItemsResult.items;
 
 const displayReels = featuredReels.filter(
 	(reel) => reel.posterSrc || reel.videoSrc,

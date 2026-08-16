@@ -10,10 +10,12 @@ import { CATEGORY_IMAGES, getPageImage, getServiceImage } from "../../utils/site
 
 const servicesHero = getPageImage("servicesHero");
 
-const { entries: services } = await getEmDashCollection("services", {
+const { entries: services, cacheHint } = await getEmDashCollection("services", {
 	status: "published",
 	limit: 100,
 });
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
 
 const grouped = Object.fromEntries(
 	SERVICE_CATEGORY_ORDER.map((key) => [

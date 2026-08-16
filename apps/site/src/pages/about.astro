@@ -6,8 +6,18 @@ import GalleryGrid from "../components/GalleryGrid.astro";
 import { getGalleryItems } from "../utils/social-content";
 import { getPageImage, getPageImageStack } from "../utils/site-media";
 
-const { entry: page } = await getEmDashEntry("pages", "about");
-const galleryItems = (await getGalleryItems(6)).filter((item) => item.src);
+const { entry: page, cacheHint: pageCacheHint } = await getEmDashEntry(
+	"pages",
+	"about",
+);
+const galleryResult = await getGalleryItems(6);
+
+if (Astro.cache?.enabled) {
+	Astro.cache.set(pageCacheHint);
+	Astro.cache.set(galleryResult.cacheHint);
+}
+
+const galleryItems = galleryResult.items.filter((item) => item.src);
 const aboutStack = getPageImageStack();
 const aboutHero = getPageImage("aboutHero");
 ---
