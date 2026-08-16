@@ -4,26 +4,16 @@
     "packages": [
       "apps/*",
       "packages/*"
-    ],
-    "nohoist": [
-      "**/solid-start"
     ]
   },
   "scripts": {
     "build": "turbo run build",
-    "build:hrms": "turbo run hrms#vercel-build",
     "dev": "turbo run dev --parallel",
-    "dev:hrms": "turbo run hrms#dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \".\"",
-    "clean": "rimraf **/node_modules **/.turbo **/dist **/.solid **/.vercel",
+    "deploy:site": "turbo run site#deploy",
+    "clean": "rimraf **/node_modules **/.turbo **/dist **/.wrangler",
     "clean:install": "pnpm clean && pnpm install"
   },
   "devDependencies": {
-    "eslint": "^8.32.0",
-    "eslint-config-dbenhance": "workspace:0.0.0",
-    "prettier": "^2.8.3",
-    "prettier-plugin-tailwindcss": "^0.2.1",
     "rimraf": "^4.1.1",
     "turbo": "^1.7.0"
   }

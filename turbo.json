@@ -3,15 +3,14 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": ["dist/**", ".solid/**", ".vercel/**"]
-    },
-    "lint": {
-      "outputs": []
+      "outputs": ["dist/**", ".wrangler/**"]
     },
     "dev": {
       "cache": false
     },
-    "hrms#dev": {},
-    "hrms#vercel-build": {}
+    "deploy": {
+      "dependsOn": ["build"],
+      "cache": false
+    }
   }
 }

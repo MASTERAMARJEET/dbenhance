@@ -1,0 +1,25 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "dbenhance-site",
+  "main": "./src/worker.ts",
+  "compatibility_date": "2026-02-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "dbenhance-site"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "dbenhance-media"
+    }
+  ],
+  // Enable on paid Cloudflare plans for sandboxed plugins:
+  // "worker_loaders": [{ "binding": "LOADER" }],
+  // Drives scheduled publishing, plugin cron, and maintenance (see src/worker.ts)
+  "triggers": {
+    "crons": ["* * * * *"]
+  }
+}

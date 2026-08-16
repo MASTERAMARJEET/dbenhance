@@ -5,19 +5,17 @@
 .cache
 
 dist
-dist
 dist-ssr
-server/dist
-public/dist
-.solid
+.wrangler
+.dev.vars*
 .turbo
-.output
-.vercel
-.netlify
-netlify
 
 # dependencies
 node_modules
+
+# EmDash local dev
+data.db
+uploads/
 
 # IDEs and editors
 /.idea
@@ -26,9 +24,6 @@ node_modules
 *.launch
 .settings/
 .vscode
-
-# Temp
-gitignore
 
 # System Files
 .DS_Store
