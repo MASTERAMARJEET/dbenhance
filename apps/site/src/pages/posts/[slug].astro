@@ -39,53 +39,57 @@ const categories = post.data.terms?.category ?? [];
 	image={seo.ogImage}
 	content={{ collection: "posts", id: post.data.id, slug }}
 >
-	<article>
-		{
-			post.data.featured_image && (
-				<div {...post.edit.featured_image}>
-					<Image image={post.data.featured_image} />
-				</div>
-			)
-		}
+	<div class="content-with-sidebar">
+		<article class="article">
+			{
+				post.data.featured_image && (
+					<div {...post.edit.featured_image}>
+						<Image image={post.data.featured_image} />
+					</div>
+				)
+			}
 
-		<h1 {...post.edit.title}>{post.data.title}</h1>
+			<h1 {...post.edit.title}>{post.data.title}</h1>
 
-		{
-			post.data.publishedAt && (
-				<time datetime={post.data.publishedAt.toISOString()}>
-					{post.data.publishedAt.toLocaleDateString("en-US", {
-						year: "numeric",
-						month: "long",
-						day: "numeric",
-					})}
-				</time>
-			)
-		}
+			<div class="article-meta">
+				{
+					post.data.publishedAt && (
+						<time datetime={post.data.publishedAt.toISOString()}>
+							{post.data.publishedAt.toLocaleDateString("en-US", {
+								year: "numeric",
+								month: "long",
+								day: "numeric",
+							})}
+						</time>
+					)
+				}
 
-		{
-			categories.length > 0 && (
-				<div>
-					{categories.map((c) => (
-						<a href={`/category/${c.slug}`}>{c.label}</a>
-					))}
-				</div>
-			)
-		}
+				{
+					categories.length > 0 && (
+						<div class="tag-list">
+							{categories.map((c) => (
+								<a href={`/category/${c.slug}`}>{c.label}</a>
+							))}
+						</div>
+					)
+				}
+			</div>
 
-		<PortableText value={post.data.content} />
+			<PortableText value={post.data.content} />
 
-		{
-			tags.length > 0 && (
-				<div>
-					{tags.map((t) => (
-						<a href={`/tag/${t.slug}`}>{t.label}</a>
-					))}
-				</div>
-			)
-		}
-	</article>
+			{
+				tags.length > 0 && (
+					<div class="tag-list">
+						{tags.map((t) => (
+							<a href={`/tag/${t.slug}`}>{t.label}</a>
+						))}
+					</div>
+				)
+			}
+		</article>
 
-	<aside>
-		<WidgetArea name="sidebar" />
-	</aside>
+		<aside class="site-sidebar">
+			<WidgetArea name="sidebar" />
+		</aside>
+	</div>
 </Base>

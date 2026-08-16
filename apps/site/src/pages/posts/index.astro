@@ -22,24 +22,28 @@ const postsWithTags = posts.map((post) => ({
 ---
 
 <Base title="All Posts">
-	<h1>Posts</h1>
+	<div class="page-header">
+		<h1>Posts</h1>
+	</div>
 
 	{
 		postsWithTags.length === 0 ? (
 			<p>No posts yet.</p>
 		) : (
-			<ul>
+			<ul class="post-list">
 				{postsWithTags.map(({ post, tags }) => (
-					<li>
+					<li class="post-card">
 						<a href={`/posts/${post.id}`}>
 							{post.data.featured_image && (
 								<Image image={post.data.featured_image} />
 							)}
-							<h2>{post.data.title}</h2>
+							<div class="post-card-body">
+								<h2>{post.data.title}</h2>
+								{post.data.excerpt && <p>{post.data.excerpt}</p>}
+							</div>
 						</a>
-						{post.data.excerpt && <p>{post.data.excerpt}</p>}
 						{tags.length > 0 && (
-							<div>
+							<div class="tag-list">
 								{tags.map((t) => (
 									<a href={`/tag/${t.slug}`}>{t.label}</a>
 								))}

@@ -20,23 +20,27 @@ const { entries: posts } = await getEmDashCollection("posts", {
 	title={`Posts tagged "${term.label}"`}
 	description={`Posts tagged ${term.label}`}
 >
-	<h1>Tag: {term.label}</h1>
-	<p>{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
+	<div class="page-header">
+		<h1>Tag: {term.label}</h1>
+		<p>{posts.length} {posts.length === 1 ? "post" : "posts"}</p>
+	</div>
 
 	{
 		posts.length === 0 ? (
 			<p>No posts with this tag yet.</p>
 		) : (
-			<ul>
+			<ul class="post-list">
 				{posts.map((post) => (
-					<li>
+					<li class="post-card">
 						<a href={`/posts/${post.id}`}>
 							{post.data.featured_image && (
 								<Image image={post.data.featured_image} />
 							)}
-							<h2>{post.data.title}</h2>
+							<div class="post-card-body">
+								<h2>{post.data.title}</h2>
+								{post.data.excerpt && <p>{post.data.excerpt}</p>}
+							</div>
 						</a>
-						{post.data.excerpt && <p>{post.data.excerpt}</p>}
 					</li>
 				))}
 			</ul>

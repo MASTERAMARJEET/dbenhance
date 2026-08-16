@@ -33,7 +33,7 @@ const seo = getSeoMeta(page, {
 	canonical={seo.canonical}
 	content={{ collection: "pages", id: page.data.id, slug }}
 >
-	<article>
+	<article class="article">
 		<h1 {...page.edit.title}>{page.data.title}</h1>
 
 		<PortableText value={page.data.content} />
