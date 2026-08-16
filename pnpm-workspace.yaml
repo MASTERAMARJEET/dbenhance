@@ -1,3 +1,10 @@
 packages:
   - 'apps/*'
   - 'packages/*'
+minimumReleaseAge: 0
+enablePrePostScripts: true
+strictPeerDependencies: false
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+  workerd: true

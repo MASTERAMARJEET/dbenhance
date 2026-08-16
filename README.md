@@ -4,8 +4,8 @@ Marketing site powered by [EmDash CMS](https://emdashcms.com/) on Cloudflare (Wo
 
 ## Requirements
 
-- Node.js 22.12.0 or later
-- pnpm
+- Node.js 26.0.0 or later
+- pnpm 11.22.0 (pinned via `packageManager` in `package.json`)
 
 ## Development
 
