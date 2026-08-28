@@ -4,6 +4,7 @@ import react from "@astrojs/react";
 import { d1, kvCache, r2 } from "@emdash-cms/cloudflare";
 import { defineConfig } from "astro/config";
 import emdash, { memoryCache } from "emdash/astro";
+import { gtmPlugin } from "./src/plugins/gtm/index.ts";
 
 const useKvObjectCache =
   process.env.CLOUDFLARE_ENV === "remote" || !import.meta.env.DEV;
@@ -39,6 +40,7 @@ export default defineConfig({
       objectCache: useKvObjectCache
         ? kvCache({ binding: "CACHE" })
         : memoryCache(),
+      plugins: [gtmPlugin()],
     }),
   ],
   devToolbar: { enabled: false },
