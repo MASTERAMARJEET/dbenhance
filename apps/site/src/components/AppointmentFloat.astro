@@ -1,0 +1,159 @@
+---
+import {
+	APPOINTMENT_SERVICE_OPTIONS,
+	getDefaultLocation,
+	getLocationsInOrder,
+} from "../data/locations";
+
+const defaultLocation = getDefaultLocation();
+const locations = getLocationsInOrder();
+---
+
+<button
+	type="button"
+	class="float-book"
+	data-appointment-open
+	aria-haspopup="dialog"
+	aria-controls="appointment-dialog"
+>
+	Book an Appointment
+</button>
+
+<dialog id="appointment-dialog" class="appointment-dialog" aria-labelledby="appointment-title">
+	<form class="appointment-form" method="dialog" data-appointment-form>
+		<div class="appointment-form__header">
+			<h2 id="appointment-title">Book an Appointment</h2>
+			<button type="button" class="appointment-form__close" data-appointment-close aria-label="Close">
+				×
+			</button>
+		</div>
+
+		<label class="appointment-form__field">
+			<span>Name</span>
+			<input type="text" name="name" required autocomplete="name" maxlength="120" />
+		</label>
+
+		<label class="appointment-form__field">
+			<span>Mobile Number</span>
+			<input
+				type="tel"
+				name="mobile"
+				required
+				autocomplete="tel"
+				inputmode="tel"
+				maxlength="20"
+				placeholder="10-digit mobile"
+			/>
+		</label>
+
+		<label class="appointment-form__field">
+			<span>Preferred location</span>
+			<select name="location" required>
+				{
+					locations.map((loc) => (
+						<option value={loc.label} selected={loc.id === defaultLocation.id}>
+							{loc.label}
+						</option>
+					))
+				}
+			</select>
+		</label>
+
+		<label class="appointment-form__field">
+			<span>Service Interested In</span>
+			<select name="service" required>
+				<option value="" disabled selected>Select a service</option>
+				{
+					APPOINTMENT_SERVICE_OPTIONS.map((service) => (
+						<option value={service}>{service}</option>
+					))
+				}
+			</select>
+		</label>
+
+		<label class="appointment-form__field">
+			<span>Your Message</span>
+			<textarea name="message" rows="4" maxlength="2000" placeholder="Preferred date, time, or notes"></textarea>
+		</label>
+
+		<p class="appointment-form__error" data-appointment-error hidden></p>
+
+		<button type="submit" class="btn btn--primary appointment-form__submit" data-appointment-submit>
+			Submit
+		</button>
+	</form>
+</dialog>
+
+<script>
+	const dialog = document.getElementById("appointment-dialog");
+	const form = document.querySelector("[data-appointment-form]");
+	const errorEl = document.querySelector("[data-appointment-error]");
+	const submitBtn = document.querySelector("[data-appointment-submit]");
+
+	if (dialog instanceof HTMLDialogElement && form instanceof HTMLFormElement) {
+		document.querySelectorAll("[data-appointment-open]").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				dialog.showModal();
+			});
+		});
+
+		document.querySelectorAll("[data-appointment-close]").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				dialog.close();
+			});
+		});
+
+		dialog.addEventListener("click", (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+
+		form.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			if (errorEl instanceof HTMLElement) {
+				errorEl.hidden = true;
+				errorEl.textContent = "";
+			}
+
+			const data = new FormData(form);
+			const payload = {
+				name: String(data.get("name") ?? "").trim(),
+				mobile: String(data.get("mobile") ?? "").trim(),
+				location: String(data.get("location") ?? "").trim(),
+				service: String(data.get("service") ?? "").trim(),
+				message: String(data.get("message") ?? "").trim(),
+			};
+
+			if (submitBtn instanceof HTMLButtonElement) {
+				submitBtn.disabled = true;
+				submitBtn.textContent = "Sending…";
+			}
+
+			try {
+				const res = await fetch("/api/book-appointment", {
+					method: "POST",
+					headers: { "Content-Type": "application/json", Accept: "application/json" },
+					body: JSON.stringify(payload),
+				});
+				const body = await res.json().catch(() => ({}));
+				if (!res.ok) {
+					throw new Error(
+						typeof body.error === "string"
+							? body.error
+							: "Something went wrong. Please try again or call us.",
+					);
+				}
+				window.location.href = "/thankyou";
+			} catch (err) {
+				if (errorEl instanceof HTMLElement) {
+					errorEl.hidden = false;
+					errorEl.textContent =
+						err instanceof Error ? err.message : "Something went wrong. Please try again.";
+				}
+				if (submitBtn instanceof HTMLButtonElement) {
+					submitBtn.disabled = false;
+					submitBtn.textContent = "Submit";
+				}
+			}
+		});
+	}
+</script>

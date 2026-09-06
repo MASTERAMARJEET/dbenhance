@@ -32,6 +32,9 @@
       "bucket_name": "dbenhance-media"
     }
   ],
+  "vars": {
+    "RESEND_FROM_EMAIL": "DB Enhance <onboarding@resend.dev>"
+  },
   "env": {
     "remote": {
       "routes": [],

@@ -3,24 +3,24 @@
     "og": "/_emdash/api/media/file/01M053KK848CPPZYH5MSJMK9J1.jpg",
     "mosaic": [
       {
-        "shortcode": "Da5NrCOpCUo",
-        "position": "center 25%",
-        "alt": "Hair styling at DB Enhance"
-      },
-      {
-        "shortcode": "DaNfCvWJu6K",
-        "position": "center center",
-        "alt": "Salon styling at DB Enhance"
-      },
-      {
-        "shortcode": "DbQaOGppSXo",
+        "serviceKey": "hair-fixing",
         "position": "center 30%",
-        "alt": "Hair fixing at DB Enhance"
+        "alt": "Hair Patch at DB Enhance"
       },
       {
-        "shortcode": "DbIq3RrJIsY",
+        "serviceKey": "hair-weaving",
         "position": "center 35%",
-        "alt": "Hair transformation at DB Enhance"
+        "alt": "Hair Extension at DB Enhance"
+      },
+      {
+        "serviceKey": "nail-manicure",
+        "position": "center center",
+        "alt": "Nail Care at DB Enhance"
+      },
+      {
+        "serviceKey": "grooming-bridal",
+        "position": "center center",
+        "alt": "Bridal Make Up at DB Enhance"
       }
     ]
   },
@@ -37,7 +37,7 @@
   "services": {
     "salon-hair": "/_emdash/api/media/file/01M053MXQS94REWAJJETHHAJ55.jpg",
     "hair-fixing": "/_emdash/api/media/file/01M053N0HT0F23JACSC716WK43.jpg",
-    "nail-art": "_emdash/api/media/file/01M059D8PA1XM1DFNRY4YPH7AH.01M059DBAQKZ0DAB0Q4H0AYBN8.jpg",
+    "nail-art": "/_emdash/api/media/file/01M059D8PA1XM1DFNRY4YPH7AH.01M059DBAQKZ0DAB0Q4H0AYBN8.jpg",
     "nail-manicure": "/_emdash/api/media/file/01M0563WCC8AB4J40RN80V8PNH.jpg",
     "skin-facial": "/_emdash/api/media/file/01M0566495JE7GX621V4MEM95K.jpg",
     "grooming-bridal": "/_emdash/api/media/file/01M053NG7BK0KXYXTRSNMZNZSM.jpg"

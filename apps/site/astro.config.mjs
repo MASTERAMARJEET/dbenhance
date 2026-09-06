@@ -22,6 +22,8 @@ export default defineConfig({
     "/gallery": { maxAge: 300, swr: 86400 },
     "/services": { maxAge: 300, swr: 86400 },
     "/services/**": { maxAge: 300, swr: 86400 },
+    "/privacy": { maxAge: 300, swr: 86400 },
+    "/thankyou": { maxAge: 60, swr: 3600 },
     "/posts": { maxAge: 300, swr: 86400 },
     "/posts/**": { maxAge: 300, swr: 86400 },
     "/category/**": { maxAge: 300, swr: 86400 },
