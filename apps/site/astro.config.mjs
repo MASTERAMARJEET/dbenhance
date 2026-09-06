@@ -6,8 +6,14 @@ import { defineConfig } from "astro/config";
 import emdash, { memoryCache } from "emdash/astro";
 import { gtmPlugin } from "./src/plugins/gtm/index.ts";
 
-const useKvObjectCache =
-  process.env.CLOUDFLARE_ENV === "remote" || !import.meta.env.DEV;
+const cloudflareEnv = process.env.CLOUDFLARE_ENV;
+const useRemoteBindings = cloudflareEnv === "dev";
+const useKvObjectCache = useRemoteBindings || !import.meta.env.DEV;
+const siteUrl =
+  process.env.EMDASH_SITE_URL ??
+  (cloudflareEnv === "dev"
+    ? "https://dbenhance-site-dev.masteramarjeetkumar.workers.dev"
+    : "https://dbenhance.com");
 
 export default defineConfig({
   output: "server",
@@ -34,7 +40,7 @@ export default defineConfig({
   integrations: [
     react(),
     emdash({
-      siteUrl: "https://dbenhance.com",
+      siteUrl,
       database: d1({ binding: "DB", session: "auto" }),
       storage: r2({ binding: "MEDIA" }),
       objectCache: useKvObjectCache
