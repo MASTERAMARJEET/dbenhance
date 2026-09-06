@@ -5,8 +5,10 @@ import Base from "../../layouts/Base.astro";
 import { getServiceCategoryLabel } from "../../utils/service-categories";
 import { prepareServiceContent } from "../../utils/service-content";
 import { getServiceImage } from "../../utils/site-media";
+import { getDefaultLocation } from "../../data/locations";
 
 const slug = decodeSlug(Astro.params.slug);
+const defaultLocation = getDefaultLocation();
 
 if (!slug) {
 	return Astro.redirect("/404");
@@ -86,7 +88,9 @@ const bodyContent = prepareServiceContent(
 				<div class="service-aside__cta">
 					<p class="service-aside__cta-label">Interested in this service?</p>
 					<a class="btn btn--primary" href="/contact">Book an appointment</a>
-					<a class="btn btn--secondary" href="tel:9043047266">Call 9043047266</a>
+					<a class="btn btn--secondary" href={`tel:${defaultLocation.primaryPhone.tel}`}>
+						Call {defaultLocation.primaryPhone.display}
+					</a>
 					<a class="text-link" href="/services">← All services</a>
 				</div>
 			</aside>

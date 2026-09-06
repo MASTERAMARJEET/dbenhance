@@ -1,0 +1,31 @@
+---
+import Base from "../layouts/Base.astro";
+import { getDefaultLocation, whatsappUrl } from "../data/locations";
+
+const defaultLocation = getDefaultLocation();
+const wa = whatsappUrl(defaultLocation);
+---
+
+<Base
+	title="Thank You"
+	description="Thank you for contacting DB Enhance. We will get back to you shortly to confirm your appointment."
+	fullWidth
+>
+	<section class="section thankyou">
+		<p class="eyebrow">DB Enhance</p>
+		<h1>Thank you</h1>
+		<p class="thankyou__lead">
+			Your enquiry has been received. Our team will contact you shortly to confirm
+			your appointment.
+		</p>
+		<div class="thankyou__actions">
+			<a class="btn btn--primary" href="/">Back to home</a>
+			<a class="btn btn--secondary" href={`tel:${defaultLocation.primaryPhone.tel}`}>
+				Call {defaultLocation.primaryPhone.display}
+			</a>
+			<a class="btn btn--secondary" href={wa} target="_blank" rel="noopener noreferrer">
+				WhatsApp us
+			</a>
+		</div>
+	</section>
+</Base>

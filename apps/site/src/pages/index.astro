@@ -64,7 +64,7 @@ const categoryCards = [
 ---
 
 <Base
-	title="DB Enhance — Hair, Nail & Salon in Padur, Chennai"
+	title="DB Enhance — Hair, Nail & Salon in Bangalore & Chennai"
 	description="DB Enhance is a unisex salon offering hair styling, non-surgical hair fixing, nail art, facials, waxing, and bridal packages. Book your appointment today."
 	fullWidth
 	image={HERO_IMAGE}
@@ -114,7 +114,7 @@ const categoryCards = [
 							<VisualCard
 								href={`/services/${service!.data.slug}`}
 								image={getServiceImage(
-									service!.data.slug,
+									service!.data.slug ?? "",
 									service!.data.category,
 								)}
 								title={service!.data.title}
@@ -190,10 +190,10 @@ const categoryCards = [
 		<div class="cta-band__scrim" />
 		<div class="cta-band__inner">
 			<h2>Ready for a fresh look?</h2>
-			<p>Call us or visit our salon on Rajiv Gandhi Salai. Walk-ins welcome.</p>
+			<p>Call us or visit our Bangalore or Chennai salon. Walk-ins welcome.</p>
 			<div class="hero__actions">
 				<a class="btn btn--light" href="/contact">Contact Us</a>
-				<a class="btn btn--ghost-light" href="tel:9043047266">9043047266</a>
+				<a class="btn btn--ghost-light" href="tel:8797827102">8797827102</a>
 			</div>
 		</div>
 	</section>
