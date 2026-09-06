@@ -166,24 +166,17 @@ time {
   text-decoration: none;
 }
 
-.site-search {
-  min-width: 10rem;
+.site-header-phone {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  white-space: nowrap;
+  letter-spacing: 0.01em;
 }
 
-.site-search-input {
-  width: 100%;
-  padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-bg);
-  color: var(--color-text);
-  font: inherit;
-  font-size: 0.875rem;
-}
-
-.site-search-input:focus {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 1px;
+.site-header-phone:hover {
+  color: var(--color-accent-hover);
+  text-decoration: none;
 }
 
 .site-main {
@@ -226,8 +219,24 @@ time {
 }
 
 .site-footer__contact p,
-.site-footer__hours p {
+.site-footer__hours p,
+.site-footer__locations p,
+.site-footer__social {
   margin: 0 0 var(--space-2);
+}
+
+.site-footer__location {
+  margin-bottom: var(--space-4);
+}
+
+.site-footer__location:last-of-type {
+  margin-bottom: var(--space-2);
+}
+
+.site-footer__location-title {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-1) !important;
 }
 
 .site-footer__copy {
@@ -241,9 +250,255 @@ time {
 
 @media (min-width: 768px) {
   .site-footer__inner {
-    grid-template-columns: 1.2fr 1.5fr 1fr;
+    grid-template-columns: 1fr 1.6fr 0.9fr;
     align-items: start;
   }
+}
+
+/* ----- Floating CTAs ----- */
+
+.float-book {
+  position: fixed;
+  z-index: 40;
+  right: var(--space-5);
+  bottom: calc(var(--space-5) + 4.25rem);
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem 1.15rem;
+  border-radius: 999px;
+  background: var(--color-accent);
+  color: #fff;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgb(26 18 18 / 0.2);
+}
+
+.float-book:hover {
+  background: var(--color-accent-hover);
+}
+
+.float-whatsapp {
+  position: fixed;
+  z-index: 40;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  border-radius: 999px;
+  background: #25d366;
+  color: #fff;
+  box-shadow: 0 8px 24px rgb(26 18 18 / 0.18);
+}
+
+.float-whatsapp:hover {
+  color: #fff;
+  text-decoration: none;
+  filter: brightness(1.05);
+}
+
+.float-whatsapp__icon {
+  display: grid;
+  place-items: center;
+  line-height: 0;
+}
+
+.appointment-dialog {
+  border: none;
+  border-radius: var(--radius);
+  padding: 0;
+  max-width: min(26rem, calc(100vw - 2rem));
+  width: 100%;
+  box-shadow: 0 20px 50px rgb(26 18 18 / 0.25);
+}
+
+.appointment-dialog::backdrop {
+  background: rgb(26 18 18 / 0.45);
+}
+
+.appointment-form {
+  display: grid;
+  gap: var(--space-4);
+  padding: var(--space-5);
+}
+
+.appointment-form__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.appointment-form__header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.appointment-form__close {
+  appearance: none;
+  border: none;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+}
+
+.appointment-form__field {
+  display: grid;
+  gap: var(--space-2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.appointment-form__field input,
+.appointment-form__field select,
+.appointment-form__field textarea {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: 400;
+}
+
+.appointment-form__field input:focus,
+.appointment-form__field select:focus,
+.appointment-form__field textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.appointment-form__error {
+  margin: 0;
+  color: var(--color-accent);
+  font-size: 0.875rem;
+}
+
+.appointment-form__submit {
+  width: 100%;
+}
+
+.thankyou {
+  text-align: center;
+  max-width: 36rem;
+  margin-inline: auto;
+}
+
+.thankyou__lead {
+  color: var(--color-muted);
+  font-size: 1.0625rem;
+}
+
+.thankyou__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-top: var(--space-5);
+}
+
+.contact-locations {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .contact-locations {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.contact-maps {
+  display: grid;
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+
+@media (min-width: 900px) {
+  .contact-maps {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.contact-map__title {
+  margin: 0 0 var(--space-3);
+  font-size: 1.0625rem;
+}
+
+.service-collage {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-2);
+  height: 100%;
+  min-height: 16rem;
+}
+
+.service-collage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius);
+  min-height: 7.5rem;
+}
+
+.testimonials {
+  display: grid;
+  gap: var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .testimonials {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.testimonial-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.testimonial-card__media {
+  aspect-ratio: 16 / 10;
+  background: var(--color-bg);
+}
+
+.testimonial-card__media img,
+.testimonial-card__media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.testimonial-card__body {
+  padding: var(--space-4);
+}
+
+.testimonial-card__quote {
+  margin: 0 0 var(--space-3);
+  color: var(--color-text);
+}
+
+.testimonial-card__meta {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-muted);
+}
+
+.gallery-empty {
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+  color: var(--color-muted);
 }
 
 /* ----- Hero ----- */
@@ -1378,8 +1633,8 @@ time {
     margin-right: 0;
   }
 
-  .site-search {
-    flex: 1 1 100%;
+  .site-header-phone {
+    font-size: 0.8125rem;
   }
 
   .site-main {

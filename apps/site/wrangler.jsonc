@@ -34,7 +34,8 @@
     }
   ],
   "vars": {
-    "EMDASH_SITE_URL": "https://dbenhance.com"
+    "EMDASH_SITE_URL": "https://dbenhance.com",
+    "RESEND_FROM_EMAIL": "DB Enhance <onboarding@resend.dev>"
   },
   "env": {
     "dev": {
