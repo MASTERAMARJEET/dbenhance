@@ -9,10 +9,11 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "dev:remote": "CLOUDFLARE_ENV=remote astro dev",
+    "dev:remote": "CLOUDFLARE_ENV=dev astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "deploy": "astro build && wrangler deploy",
+    "deploy:dev": "CLOUDFLARE_ENV=dev astro build && CLOUDFLARE_ENV=dev wrangler deploy",
     "typecheck": "astro check"
   },
   "dependencies": {
@@ -27,7 +28,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.7",
     "@cloudflare/workers-types": "^5.20260816.1",
-    "wrangler": "^4.99.0"
+    "wrangler": "^4.129.0"
   },
   "engines": {
     "node": ">=26.0.0"

@@ -23,7 +23,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_name": "dbenhance-site"
+      "database_name": "dbenhance-site",
+      "database_id": "f32c1e39-7ee9-4bcc-9bee-27cb14178b35"
     }
   ],
   "r2_buckets": [
@@ -33,30 +34,36 @@
     }
   ],
   "env": {
-    "remote": {
+    "dev": {
+      "name": "dbenhance-site-dev",
+      "workers_dev": true,
       "routes": [],
       "d1_databases": [
         {
           "binding": "DB",
-          "database_name": "dbenhance-site",
-          "database_id": "f32c1e39-7ee9-4bcc-9bee-27cb14178b35",
+          "database_name": "dbenhance-site-dev",
+          "database_id": "b9282a61-50cd-4d21-a64b-6b57bc56ad2c",
           "remote": true
         }
       ],
       "r2_buckets": [
         {
           "binding": "MEDIA",
-          "bucket_name": "dbenhance-media",
+          "bucket_name": "dbenhance-media-dev",
           "remote": true
         }
       ],
       "kv_namespaces": [
         {
           "binding": "CACHE",
-          "id": "68178f00cd6546069cbe18161da385f6",
+          "id": "5f076f63c7a6410f8eea9a279a7db85b",
           "remote": true
         }
-      ]
+      ],
+      "vars": {
+        // Set to the workers.dev URL after the first deploy:dev
+        "EMDASH_SITE_URL": "https://dbenhance-site-dev.masteramarjeetkumar.workers.dev"
+      }
     }
   }
 }
