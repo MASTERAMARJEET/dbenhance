@@ -1,12 +1,9 @@
 ---
-import {
-	APPOINTMENT_SERVICE_OPTIONS,
-	getDefaultLocation,
-	getLocationsInOrder,
-} from "../data/locations";
+import { APPOINTMENT_SERVICE_OPTIONS, getLocationsInOrder } from "../data/locations";
+import { getActiveCityId, getActiveLocation } from "../utils/city-context";
 
-const defaultLocation = getDefaultLocation();
-const locations = getLocationsInOrder();
+const activeLocation = getActiveLocation(Astro);
+const locations = getLocationsInOrder(getActiveCityId(Astro.locals));
 ---
 
 <button
@@ -51,7 +48,7 @@ const locations = getLocationsInOrder();
 			<select name="location" required>
 				{
 					locations.map((loc) => (
-						<option value={loc.label} selected={loc.id === defaultLocation.id}>
+						<option value={loc.label} selected={loc.id === activeLocation.id}>
 							{loc.label}
 						</option>
 					))

@@ -5,6 +5,9 @@ import GalleryGrid from "../components/GalleryGrid.astro";
 import ReelStrip from "../components/ReelStrip.astro";
 import VisualCard from "../components/VisualCard.astro";
 import { SERVICE_CATEGORIES } from "../utils/service-categories";
+import { getActiveCityId, getActiveLocation } from "../utils/city-context";
+import { getCityCopy } from "../utils/city-copy";
+import { setPageCache } from "../utils/page-cache";
 import { getFeaturedReels, getGalleryItems } from "../utils/social-content";
 import {
 	CATEGORY_IMAGES,
@@ -15,6 +18,10 @@ import {
 	getServiceImage,
 } from "../utils/site-media";
 
+const cityId = getActiveCityId(Astro.locals);
+const activeLocation = getActiveLocation(Astro);
+const cityCopy = getCityCopy(cityId);
+
 const { entries: services, cacheHint: servicesCacheHint } =
 	await getEmDashCollection("services", {
 	status: "published",
@@ -23,14 +30,12 @@ const { entries: services, cacheHint: servicesCacheHint } =
 
 const [featuredReelsResult, galleryItemsResult] = await Promise.all([
 	getFeaturedReels(),
-	getGalleryItems(),
+	getGalleryItems(undefined, cityId),
 ]);
 
-if (Astro.cache?.enabled) {
-	Astro.cache.set(servicesCacheHint);
-	Astro.cache.set(featuredReelsResult.cacheHint);
-	Astro.cache.set(galleryItemsResult.cacheHint);
-}
+setPageCache(Astro, servicesCacheHint);
+setPageCache(Astro, featuredReelsResult.cacheHint);
+setPageCache(Astro, galleryItemsResult.cacheHint);
 
 const featuredReels = featuredReelsResult.reels;
 const galleryItems = galleryItemsResult.items;
@@ -64,8 +69,8 @@ const categoryCards = [
 ---
 
 <Base
-	title="DB Enhance — Hair, Nail & Salon in Bangalore & Chennai"
-	description="DB Enhance is a unisex salon offering hair styling, non-surgical hair fixing, nail art, facials, waxing, and bridal packages. Book your appointment today."
+	title={cityCopy.homeTitle}
+	description={cityCopy.homeDescription}
 	fullWidth
 	image={HERO_IMAGE}
 >
@@ -140,11 +145,7 @@ const categoryCards = [
 	<section class="section section--about">
 		<p class="eyebrow">About DB Enhance</p>
 		<h2>Look and feel your best</h2>
-		<p>
-			Expert hair artists, nail technicians, and skin care specialists —
-			delivering precision cuts, creative colour, non-surgical hair fixing,
-			and polished nail care with genuine attention to detail.
-		</p>
+		<p>{cityCopy.homeAboutLead}</p>
 		<a class="btn btn--secondary" href="/about">About us</a>
 	</section>
 
@@ -190,10 +191,15 @@ const categoryCards = [
 		<div class="cta-band__scrim" />
 		<div class="cta-band__inner">
 			<h2>Ready for a fresh look?</h2>
-			<p>Call us or visit our Bangalore or Chennai salon. Walk-ins welcome.</p>
+			<p>{cityCopy.homeCtaLine} Walk-ins welcome.</p>
 			<div class="hero__actions">
 				<a class="btn btn--light" href="/contact">Contact Us</a>
-				<a class="btn btn--ghost-light" href="tel:8797827102">8797827102</a>
+				<a
+					class="btn btn--ghost-light"
+					href={`tel:${activeLocation.primaryPhone.tel}`}
+				>
+					{activeLocation.primaryPhone.display}
+				</a>
 			</div>
 		</div>
 	</section>

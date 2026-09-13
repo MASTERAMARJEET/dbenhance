@@ -1,9 +1,10 @@
 ---
 import Base from "../layouts/Base.astro";
-import { getDefaultLocation, whatsappUrl } from "../data/locations";
+import { whatsappUrl } from "../data/locations";
+import { getActiveLocation } from "../utils/city-context";
 
-const defaultLocation = getDefaultLocation();
-const wa = whatsappUrl(defaultLocation);
+const activeLocation = getActiveLocation(Astro);
+const wa = whatsappUrl(activeLocation);
 ---
 
 <Base
@@ -20,8 +21,8 @@ const wa = whatsappUrl(defaultLocation);
 		</p>
 		<div class="thankyou__actions">
 			<a class="btn btn--primary" href="/">Back to home</a>
-			<a class="btn btn--secondary" href={`tel:${defaultLocation.primaryPhone.tel}`}>
-				Call {defaultLocation.primaryPhone.display}
+			<a class="btn btn--secondary" href={`tel:${activeLocation.primaryPhone.tel}`}>
+				Call {activeLocation.primaryPhone.display}
 			</a>
 			<a class="btn btn--secondary" href={wa} target="_blank" rel="noopener noreferrer">
 				WhatsApp us

@@ -3,21 +3,24 @@ import Base from "../layouts/Base.astro";
 import GalleryGrid from "../components/GalleryGrid.astro";
 import ReelStrip from "../components/ReelStrip.astro";
 import { getFeaturedReels, getGalleryItems } from "../utils/social-content";
-import { getDefaultLocation, SOCIAL_LINKS } from "../data/locations";
+import { SOCIAL_LINKS } from "../data/locations";
+import { getActiveCityId, getActiveLocation } from "../utils/city-context";
+import { getCityCopy } from "../utils/city-copy";
+import { setPageCache } from "../utils/page-cache";
 import { getPageImage } from "../utils/site-media";
 
 const galleryHero = getPageImage("galleryHero");
-const defaultLocation = getDefaultLocation();
+const cityId = getActiveCityId(Astro.locals);
+const cityCopy = getCityCopy(cityId);
+const activeLocation = getActiveLocation(Astro);
 
 const [featuredReelsResult, galleryItemsResult] = await Promise.all([
 	getFeaturedReels(),
-	getGalleryItems(),
+	getGalleryItems(undefined, cityId),
 ]);
 
-if (Astro.cache?.enabled) {
-	Astro.cache.set(featuredReelsResult.cacheHint);
-	Astro.cache.set(galleryItemsResult.cacheHint);
-}
+setPageCache(Astro, featuredReelsResult.cacheHint);
+setPageCache(Astro, galleryItemsResult.cacheHint);
 
 const featuredReels = featuredReelsResult.reels;
 const galleryItems = galleryItemsResult.items;
@@ -30,7 +33,7 @@ const displayGallery = galleryItems.filter((item) => item.src);
 
 <Base
 	title="Gallery"
-	description="Browse hair styling, nail care, makeup, and salon transformations from DB Enhance in Bangalore and Chennai."
+	description={cityCopy.galleryDescription}
 	fullWidth
 	image={galleryHero}
 >
@@ -44,10 +47,7 @@ const displayGallery = galleryItems.filter((item) => item.src);
 		<div class="page-hero__content">
 			<p class="eyebrow eyebrow--light">DB Enhance</p>
 			<h1>Our Work</h1>
-			<p class="page-hero__lead">
-				Hair patch, extensions, nail care, bridal makeup, and more — from our
-				Bangalore and Chennai salons.
-			</p>
+			<p class="page-hero__lead">{cityCopy.galleryHeroLead}</p>
 		</div>
 	</section>
 
@@ -105,8 +105,8 @@ const displayGallery = galleryItems.filter((item) => item.src);
 		<div class="cta-inline">
 			<p>Ready for your transformation?</p>
 			<a class="btn btn--primary" href="/contact">Book an appointment</a>
-			<a class="btn btn--secondary" href={`tel:${defaultLocation.primaryPhone.tel}`}>
-				Call {defaultLocation.primaryPhone.display}
+			<a class="btn btn--secondary" href={`tel:${activeLocation.primaryPhone.tel}`}>
+				Call {activeLocation.primaryPhone.display}
 			</a>
 		</div>
 	</section>

@@ -5,16 +5,18 @@ import {
 	EmDashBodyStart,
 	EmDashBodyEnd,
 } from "emdash/ui";
+import LiveSearch from "emdash/ui/search";
 import { createPublicPageContext } from "emdash/page";
 import { resolveStarterSiteIdentity } from "../utils/site-identity";
 import {
 	SITE_EMAIL,
 	SOCIAL_LINKS,
-	getDefaultLocation,
 	getLocationsInOrder,
 	whatsappUrl,
 } from "../data/locations";
+import { getActiveCityId, getActiveLocation } from "../utils/city-context";
 import AppointmentFloat from "../components/AppointmentFloat.astro";
+import CitySwitcher from "../components/CitySwitcher.astro";
 import "../styles/theme.css";
 
 interface Props {
@@ -34,9 +36,11 @@ const fullTitle = title.includes(siteTitle) ? title : `${title} — ${siteTitle}
 const pageDescription = description ?? siteTagline;
 
 const menu = await getMenu("primary");
-const defaultLocation = getDefaultLocation();
-const locations = getLocationsInOrder();
-const waUrl = whatsappUrl(defaultLocation);
+const activeCityId = getActiveCityId(Astro.locals);
+const activeLocation = getActiveLocation(Astro);
+const locations = getLocationsInOrder(activeCityId);
+const waUrl = whatsappUrl(activeLocation);
+const citySwitchPath = Astro.url.pathname + Astro.url.search;
 
 const pageCtx = createPublicPageContext({
 	Astro,
@@ -85,12 +89,26 @@ const pageCtx = createPublicPageContext({
 						))
 					}
 				</div>
-				<a
-					class="site-header-phone"
-					href={`tel:${defaultLocation.primaryPhone.tel}`}
-				>
-					{defaultLocation.primaryPhone.display}
-				</a>
+				<div class="site-header-tools">
+					<LiveSearch
+						placeholder="Search…"
+						collections={["pages", "services"]}
+						routeMap={{ pages: "/:slug", services: "/services/:slug" }}
+						class="site-header-search"
+						inputClass="site-header-search__input"
+						resultsClass="site-header-search__results"
+						resultClass="site-header-search__result"
+						expandOnFocus={{ collapsed: "9rem", expanded: "14rem" }}
+						limit={8}
+					/>
+					<CitySwitcher currentPath={citySwitchPath} />
+					<a
+						class="site-header-phone"
+						href={`tel:${activeLocation.primaryPhone.tel}`}
+					>
+						{activeLocation.primaryPhone.display}
+					</a>
+				</div>
 			</nav>
 		</header>
 
@@ -143,7 +161,7 @@ const pageCtx = createPublicPageContext({
 				</div>
 				<div class="site-footer__hours">
 					{
-						defaultLocation.hours.map((row) => (
+						activeLocation.hours.map((row) => (
 							<p>
 								{row.label}: {row.time.replaceAll(":00", "")}
 							</p>

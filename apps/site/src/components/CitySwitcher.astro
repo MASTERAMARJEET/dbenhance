@@ -1,0 +1,32 @@
+---
+import { LOCATION_ORDER, LOCATIONS } from "../data/locations";
+import { getActiveCityId } from "../utils/city-context";
+
+interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+const activeId = getActiveCityId(Astro.locals);
+const next = encodeURIComponent(currentPath);
+---
+
+<div class="city-switcher" role="group" aria-label="Salon location">
+  {
+    LOCATION_ORDER.map((id) => {
+      const isActive = id === activeId;
+      return isActive ? (
+        <span class="city-switcher__item city-switcher__item--active">
+          {LOCATIONS[id].label}
+        </span>
+      ) : (
+        <a
+          class="city-switcher__item"
+          href={`/api/city?id=${id}&next=${next}`}
+        >
+          {LOCATIONS[id].label}
+        </a>
+      );
+    })
+  }
+</div>

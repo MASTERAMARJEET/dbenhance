@@ -1,5 +1,7 @@
 import { getEmDashCollection } from "emdash";
 import type { FeaturedReel, GalleryItem } from "../../emdash-env";
+import type { CityId } from "../data/locations";
+import { matchesGalleryLocation } from "./location-filter";
 
 export interface ReelCard {
   href: string;
@@ -67,13 +69,22 @@ export async function getFeaturedReels(limit?: number) {
   return { reels, cacheHint };
 }
 
-export async function getGalleryItems(limit?: number) {
+export async function getGalleryItems(
+  limit?: number,
+  cityId?: CityId,
+) {
   const { entries, cacheHint } = await getEmDashCollection("gallery_items", {
     status: "published",
     limit: limit ?? 100,
   });
 
   const items = sortByOrder(entries)
+    .filter((entry) => {
+      if (!cityId) return true;
+      const loc = (entry.data as GalleryItem & { location?: string | null })
+        .location;
+      return matchesGalleryLocation(loc, cityId);
+    })
     .map((entry) => mapGalleryItem(entry.data))
     .filter((item): item is GalleryCard => item !== null);
 
