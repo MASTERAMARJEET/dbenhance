@@ -61,7 +61,7 @@
         }
       ],
       "vars": {
-        // Set to the workers.dev URL after the first deploy:dev
+        // Must match config/dev.mjs (validated by pnpm check:dev-config)
         "EMDASH_SITE_URL": "https://dbenhance-site-dev.masteramarjeetkumar.workers.dev"
       }
     }

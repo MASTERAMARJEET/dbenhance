@@ -6,7 +6,7 @@ Marketing site powered by [EmDash CMS](https://emdashcms.com/) on Cloudflare (Wo
 
 - Node.js 26.0.0 or later
 - pnpm 11.22.0 (pinned via `packageManager` in `package.json`)
-- `wrangler login` or `CLOUDFLARE_API_TOKEN` for remote operations
+- `wrangler login` or `CLOUDFLARE_API_TOKEN` for deploy and Cloudflare operations
 
 ## Development
 
@@ -17,22 +17,20 @@ pnpm dev
 
 The site runs at `http://localhost:4321`. Admin UI: `http://localhost:4321/_emdash/admin`.
 
-`pnpm dev` uses local D1 and R2 (empty until you add data). To run local code against the **dev** Cloudflare environment (not production):
+`pnpm dev` uses **local** D1 and R2 (empty until you seed or add content). It does not touch production or the shared dev Worker.
 
-```bash
-pnpm dev:remote
-```
-
-Stop `pnpm dev` first — both use port `4321`. Requires `wrangler login` or a `CLOUDFLARE_API_TOKEN`. Copy the dev `EMDASH_ENCRYPTION_KEY` Worker secret into `apps/site/.dev.vars` so encrypted plugin secrets decrypt.
-
-**Writes go to dev D1/R2**, not production. Use ordinary `pnpm dev` when you want a fully local sandbox.
-
-Do not run `wrangler deploy --env dev` until dev resources are provisioned (see below).
+To exercise real dev D1/R2/KV and the deployed dev Worker, use `pnpm deploy:dev` and open the workers.dev URL (see [Dev environment](#dev-environment)).
 
 ## Build
 
 ```bash
 pnpm build
+```
+
+Production and dev builds are both checked in CI. Dev build:
+
+```bash
+pnpm --filter site build:dev
 ```
 
 ## Deploy
@@ -49,15 +47,19 @@ Dev (workers.dev):
 pnpm deploy:dev
 ```
 
-`deploy:dev` sets `CLOUDFLARE_ENV=dev` for both build and deploy so Wrangler uses the flattened `env.dev` bindings (requires Wrangler 4.11+). Do not pass `--config dist/server/wrangler.json` manually.
+`deploy:dev` sets `CLOUDFLARE_ENV=dev` and `EMDASH_SITE_URL` from `apps/site/config/dev.mjs` for the Astro build, then deploys with Wrangler 4.11+ flattened `env.dev` bindings. Do not pass `--config dist/server/wrangler.json` manually.
 
-Requires `wrangler login` or a `CLOUDFLARE_API_TOKEN`. Set `EMDASH_ENCRYPTION_KEY` in Cloudflare Worker secrets for each environment.
+Requires `wrangler login` or a `CLOUDFLARE_API_TOKEN`. Set `EMDASH_ENCRYPTION_KEY` in Cloudflare Worker secrets for each environment (use a **different** key for dev than production).
 
 `pnpm deploy:site` attaches `dbenhance.com` and `www.dbenhance.com` as Worker custom domains (configured in `apps/site/wrangler.jsonc`). `www` permanently redirects to the apex domain.
 
 If the first deploy fails with a DNS conflict, delete existing apex/`www` A or CNAME records in the Cloudflare DNS zone first. Custom domains cannot be attached while those records exist.
 
-## Dev environment setup (one-time)
+## Dev environment
+
+**This repo** already lists dev D1/R2/KV ids and the dev workers.dev URL in `apps/site/wrangler.jsonc` and `apps/site/config/dev.mjs`. After clone, run `pnpm deploy:dev` if you need to refresh the dev Worker.
+
+### One-time setup (new Cloudflare account or reprovisioning)
 
 From `apps/site`:
 
@@ -69,15 +71,18 @@ wrangler secret put EMDASH_ENCRYPTION_KEY --env dev
 wrangler secret put RESEND_API_KEY --env dev   # optional
 ```
 
-Copy the returned D1 UUID and KV namespace id into `apps/site/wrangler.jsonc` under `env.dev`, replacing the placeholder ids.
-
-Deploy dev, note the workers.dev URL, set `EMDASH_SITE_URL` in `env.dev.vars`, then redeploy:
+Copy the returned D1 UUID and KV namespace id into `apps/site/wrangler.jsonc` under `env.dev`. Set the workers.dev URL in **both** `apps/site/config/dev.mjs` and `env.dev.vars.EMDASH_SITE_URL`, then run:
 
 ```bash
+pnpm check:dev-config
 pnpm deploy:dev
 ```
 
-Create a separate dev admin account via the EmDash setup wizard on the workers.dev URL. Seed or enter content in dev as needed (EmDash admin backup download on prod is one option for manual migration).
+### After deploy
+
+1. Open the dev workers.dev URL and complete the EmDash **admin setup wizard** (separate account from production).
+2. Add or migrate content (e.g. EmDash admin backup from prod, entered manually in dev).
+3. In dev admin, confirm **Google Tag Manager** (or other analytics plugins) use test/dev containers so dev traffic does not hit production tags.
 
 ## Monorepo layout
 
