@@ -9,11 +9,12 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build:prod": "astro build",
     "build:dev": "node scripts/with-dev-env.mjs astro build",
     "preview": "astro preview",
-    "deploy": "astro build && wrangler deploy",
+    "deploy:prod": "pnpm run build:prod && wrangler deploy",
     "deploy:dev": "node scripts/deploy-dev.mjs",
+    "check:prod-config": "node scripts/check-prod-config.mjs",
     "check:dev-config": "node scripts/check-dev-site-url.mjs",
     "typecheck": "astro check"
   },

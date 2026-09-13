@@ -19,18 +19,18 @@ The site runs at `http://localhost:4321`. Admin UI: `http://localhost:4321/_emda
 
 `pnpm dev` uses **local** D1 and R2 (empty until you seed or add content). It does not touch production or the shared dev Worker.
 
-To exercise real dev D1/R2/KV and the deployed dev Worker, use `pnpm deploy:dev` and open the workers.dev URL (see [Dev environment](#dev-environment)).
+To exercise real dev D1/R2/KV and the deployed dev Worker, use `pnpm deploy:site:dev` and open the workers.dev URL (see [Dev environment](#dev-environment)).
 
 ## Build
 
 ```bash
-pnpm build
+pnpm build:prod
 ```
 
 Production and dev builds are both checked in CI. Dev build:
 
 ```bash
-pnpm --filter site build:dev
+pnpm build:dev
 ```
 
 ## Deploy
@@ -38,26 +38,26 @@ pnpm --filter site build:dev
 Production:
 
 ```bash
-pnpm deploy:site
+pnpm deploy:site:prod
 ```
 
 Dev (workers.dev):
 
 ```bash
-pnpm deploy:dev
+pnpm deploy:site:dev
 ```
 
-`deploy:dev` sets `CLOUDFLARE_ENV=dev` and `EMDASH_SITE_URL` from `apps/site/config/dev.mjs` for the Astro build, then deploys with Wrangler 4.11+ flattened `env.dev` bindings. Do not pass `--config dist/server/wrangler.json` manually.
+`deploy:site:dev` sets `CLOUDFLARE_ENV=dev` and `EMDASH_SITE_URL` from `apps/site/config/dev.mjs` for the Astro build, then deploys with Wrangler 4.11+ flattened `env.dev` bindings. Do not pass `--config dist/server/wrangler.json` manually.
 
 Requires `wrangler login` or a `CLOUDFLARE_API_TOKEN`. Set `EMDASH_ENCRYPTION_KEY` in Cloudflare Worker secrets for each environment (use a **different** key for dev than production).
 
-`pnpm deploy:site` attaches `dbenhance.com` and `www.dbenhance.com` as Worker custom domains (configured in `apps/site/wrangler.jsonc`). `www` permanently redirects to the apex domain.
+`pnpm deploy:site:prod` attaches `dbenhance.com` and `www.dbenhance.com` as Worker custom domains (configured in `apps/site/wrangler.jsonc`). `www` permanently redirects to the apex domain.
 
 If the first deploy fails with a DNS conflict, delete existing apex/`www` A or CNAME records in the Cloudflare DNS zone first. Custom domains cannot be attached while those records exist.
 
 ## Dev environment
 
-**This repo** already lists dev D1/R2/KV ids and the dev workers.dev URL in `apps/site/wrangler.jsonc` and `apps/site/config/dev.mjs`. After clone, run `pnpm deploy:dev` if you need to refresh the dev Worker.
+**This repo** already lists dev D1/R2/KV ids and the dev workers.dev URL in `apps/site/wrangler.jsonc` and `apps/site/config/dev.mjs`. After clone, run `pnpm deploy:site:dev` if you need to refresh the dev Worker.
 
 ### One-time setup (new Cloudflare account or reprovisioning)
 
@@ -75,7 +75,7 @@ Copy the returned D1 UUID and KV namespace id into `apps/site/wrangler.jsonc` un
 
 ```bash
 pnpm check:dev-config
-pnpm deploy:dev
+pnpm deploy:site:dev
 ```
 
 ### After deploy

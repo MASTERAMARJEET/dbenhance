@@ -24,10 +24,11 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - run: pnpm check:prod-config
       - run: pnpm check:dev-config
 
-      - run: pnpm build
+      - run: pnpm build:prod
 
-      - run: pnpm --filter site build:dev
+      - run: pnpm build:dev
 
       - run: pnpm --filter site typecheck
