@@ -9,13 +9,17 @@ import {
 export const CITY_COOKIE_NAME = "dbe_city";
 export const CITY_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
+/** Request/response header used for CDN cache partitioning (2 variants per URL). */
+export const CITY_VARY_HEADER = "X-DB-City";
+
 /** Salon coordinates for nearest-branch detection */
 const SALON_COORDS: Record<CityId, { lat: number; lon: number }> = {
   bangalore: { lat: 12.9482833, lon: 77.5755318 },
   chennai: { lat: 12.8077238, lon: 80.2267079 },
 };
 
-const CHENNAI_REGION = /\b(chennai|madras|tamil\s*nadu|padur|kelambakkam|omr)\b/i;
+const CHENNAI_REGION =
+  /\b(chennai|madras|tamil\s*nadu|padur|kelambakkam|omr)\b/i;
 const BANGALORE_REGION =
   /\b(bangalore|bengaluru|basavanagudi|karnataka|vanivilas)\b/i;
 
@@ -52,9 +56,7 @@ function haversineKm(
   const dLon = toRad(lon2 - lon1);
   const a =
     Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLon / 2) ** 2;
+    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
   return 6371 * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
@@ -86,13 +88,9 @@ export function inferCityIdFromCf(cf: CfGeo | undefined): CityId | null {
   if (!cf) return null;
 
   const lat =
-    typeof cf.latitude === "string"
-      ? parseFloat(cf.latitude)
-      : cf.latitude;
+    typeof cf.latitude === "string" ? parseFloat(cf.latitude) : cf.latitude;
   const lon =
-    typeof cf.longitude === "string"
-      ? parseFloat(cf.longitude)
-      : cf.longitude;
+    typeof cf.longitude === "string" ? parseFloat(cf.longitude) : cf.longitude;
 
   if (Number.isFinite(lat) && Number.isFinite(lon)) {
     return nearestCityId(lat!, lon!);
@@ -103,6 +101,14 @@ export function inferCityIdFromCf(cf: CfGeo | undefined): CityId | null {
   if (BANGALORE_REGION.test(text)) return "bangalore";
 
   return null;
+}
+
+/** Clone request with a stable city key for Workers CDN cache (never trust client-sent value). */
+export function requestWithCityVaryHeader(request: Request): Request {
+  const { cityId } = resolveCityIdFromRequest(request);
+  const headers = new Headers(request.headers);
+  headers.set(CITY_VARY_HEADER, cityId);
+  return new Request(request, { headers });
 }
 
 export function resolveCityIdFromRequest(request: Request): {
@@ -119,9 +125,7 @@ export function resolveCityIdFromRequest(request: Request): {
   return { cityId: inferred, setCityCookie: true };
 }
 
-export function getActiveCityId(
-  locals: APIContext["locals"],
-): CityId {
+export function getActiveCityId(locals: APIContext["locals"]): CityId {
   return locals.cityId ?? DEFAULT_CITY_ID;
 }
 

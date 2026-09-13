@@ -1,7 +1,7 @@
 import { defineMiddleware } from "astro:middleware";
 import {
+  CITY_VARY_HEADER,
   cityCookieHeader,
-  parseCityCookie,
   resolveCityIdFromRequest,
 } from "./utils/city-context";
 
@@ -16,16 +16,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     response.headers.append("Set-Cookie", cityCookieHeader(cityId));
   }
 
-  const hasCityPreference = Boolean(
-    parseCityCookie(context.request.headers.get("cookie")) || setCityCookie,
-  );
-  if (hasCityPreference) {
-    response.headers.set("Vary", "Cookie");
-    response.headers.set(
-      "Cache-Control",
-      "private, no-cache, must-revalidate",
-    );
-  }
+  // Two CDN variants per URL (bangalore | chennai). Worker sets CITY_VARY_HEADER on the request.
+  response.headers.set("Vary", CITY_VARY_HEADER);
 
   return response;
 });
