@@ -1,7 +1,8 @@
 import siteImages from "../data/site-images.json";
 import type { ServiceCategory } from "./service-categories";
+import { SOCIAL_LINKS } from "../data/locations";
 
-export const INSTAGRAM_PROFILE = "https://www.instagram.com/dbenhance/";
+export const INSTAGRAM_PROFILE = SOCIAL_LINKS.instagram;
 
 export interface ImageAsset {
   src: string;
@@ -19,6 +20,17 @@ function instagramSrc(shortcode: string): string {
 
 function serviceSrc(key: keyof typeof siteImages.services): string {
   return siteImages.services[key];
+}
+
+function mosaicSrc(panel: { serviceKey?: string; shortcode?: string }): string {
+  if (panel.serviceKey === "hair-weaving") {
+    return instagramSrc("DbIq3RrJIsY");
+  }
+  if (panel.serviceKey && panel.serviceKey in siteImages.services) {
+    return serviceSrc(panel.serviceKey as keyof typeof siteImages.services);
+  }
+  if (panel.shortcode) return instagramSrc(panel.shortcode);
+  return "";
 }
 
 /** Resolve a page hero or inline image key from site-images.json. */
@@ -60,14 +72,38 @@ export const CATEGORY_IMAGES: Record<ServiceCategory, ImageAsset> = {
 /** OG / social preview image (independent of service cards). */
 export const HERO_IMAGE = siteImages.hero.og;
 
-/** Full-width mosaic panels for the homepage hero. */
+/** Full-width mosaic panels for the homepage hero — one image per major service. */
 export const HERO_MOSAIC: readonly ImageAsset[] = siteImages.hero.mosaic.map(
   (panel) => ({
-    src: instagramSrc(panel.shortcode),
+    src: mosaicSrc(panel),
     alt: panel.alt,
     position: panel.position,
   }),
 );
+
+/** About page collage: Hair Patch, Extension, Nail Care, Bridal Make Up. */
+export const ABOUT_SERVICE_COLLAGE: readonly ImageAsset[] = [
+  {
+    src: serviceSrc("hair-fixing"),
+    alt: "Hair Patch at DB Enhance",
+    position: "center 30%",
+  },
+  {
+    src: instagramSrc("DbIq3RrJIsY"),
+    alt: "Hair Extension at DB Enhance",
+    position: "center 35%",
+  },
+  {
+    src: serviceSrc("nail-manicure"),
+    alt: "Nail Care at DB Enhance",
+    position: "center center",
+  },
+  {
+    src: serviceSrc("grooming-bridal"),
+    alt: "Bridal Make Up at DB Enhance",
+    position: "center center",
+  },
+];
 
 /** Per-service imagery overrides — only where different from the category default. */
 const SERVICE_IMAGES: Record<string, ImageAsset> = {

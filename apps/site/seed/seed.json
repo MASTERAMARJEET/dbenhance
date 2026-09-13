@@ -200,6 +200,71 @@
 					"defaultValue": false
 				},
 				{
+					"slug": "location",
+					"label": "Location",
+					"type": "select",
+					"validation": {
+						"options": [
+							"bangalore",
+							"chennai",
+							"both"
+						]
+					}
+				},
+				{
+					"slug": "sort_order",
+					"label": "Sort Order",
+					"type": "integer",
+					"defaultValue": 0
+				}
+			]
+		},
+		{
+			"slug": "testimonials",
+			"label": "Testimonials",
+			"labelSingular": "Testimonial",
+			"description": "Customer testimonial videos and images for the Services page",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Customer / Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "quote",
+					"label": "Quote",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "media",
+					"label": "Image",
+					"type": "image"
+				},
+				{
+					"slug": "video",
+					"label": "Video File",
+					"type": "file"
+				},
+				{
+					"slug": "location",
+					"label": "Location",
+					"type": "select",
+					"validation": {
+						"options": [
+							"bangalore",
+							"chennai"
+						]
+					}
+				},
+				{
 					"slug": "sort_order",
 					"label": "Sort Order",
 					"type": "integer",
@@ -260,13 +325,18 @@
 				},
 				{
 					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				},
+				{
+					"type": "custom",
 					"label": "Services",
 					"url": "/services"
 				},
 				{
 					"type": "custom",
-					"label": "About",
-					"url": "/about"
+					"label": "Gallery",
+					"url": "/gallery"
 				},
 				{
 					"type": "custom",

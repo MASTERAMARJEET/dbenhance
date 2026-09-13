@@ -8,6 +8,15 @@ import {
 } from "../../utils/service-categories";
 import { CATEGORY_IMAGES, getPageImage, getServiceImage } from "../../utils/site-media";
 
+interface TestimonialView {
+	title: string;
+	quote: string | null;
+	imageSrc: string | null;
+	imageAlt: string;
+	videoSrc: string | null;
+	locationLabel: string | null;
+}
+
 const servicesHero = getPageImage("servicesHero");
 
 const { entries: services, cacheHint } = await getEmDashCollection("services", {
@@ -15,7 +24,49 @@ const { entries: services, cacheHint } = await getEmDashCollection("services", {
 	limit: 100,
 });
 
-if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+let testimonials: TestimonialView[] = [];
+let testimonialsCacheHint: Awaited<ReturnType<typeof getEmDashCollection>>["cacheHint"] | undefined;
+
+try {
+	const result = await getEmDashCollection("testimonials" as "services", {
+		status: "published",
+		limit: 24,
+	});
+	testimonialsCacheHint = result.cacheHint;
+	testimonials = [...result.entries]
+		.sort(
+			(a, b) =>
+				(Number((a.data as { sort_order?: number }).sort_order) || 0) -
+				(Number((b.data as { sort_order?: number }).sort_order) || 0),
+		)
+		.map((item) => {
+			const data = item.data as {
+				title?: string;
+				quote?: string | null;
+				media?: { src?: string; url?: string; alt?: string } | null;
+				video?: { src?: string; url?: string } | null;
+				location?: string | null;
+			};
+			const location = data.location;
+			return {
+				title: data.title ?? "Client",
+				quote: data.quote ?? null,
+				imageSrc: data.media?.src ?? data.media?.url ?? null,
+				imageAlt: data.media?.alt || data.title || "Client testimonial",
+				videoSrc: data.video?.src ?? data.video?.url ?? null,
+				locationLabel: location
+					? `${location.charAt(0).toUpperCase()}${location.slice(1)}`
+					: null,
+			};
+		});
+} catch {
+	// Collection may not exist until schema is migrated / types regenerated
+}
+
+if (Astro.cache?.enabled) {
+	Astro.cache.set(cacheHint);
+	if (testimonialsCacheHint) Astro.cache.set(testimonialsCacheHint);
+}
 
 const grouped = Object.fromEntries(
 	SERVICE_CATEGORY_ORDER.map((key) => [
@@ -27,7 +78,7 @@ const grouped = Object.fromEntries(
 
 <Base
 	title="Services"
-	description="Explore DB Enhance services — salon hair care, non-surgical hair fixing, nail art, facials, waxing, makeup, and bridal packages in Padur, Chennai."
+	description="Explore DB Enhance services — salon hair care, non-surgical hair fixing, nail art, facials, waxing, makeup, and bridal packages in Bangalore and Chennai."
 	fullWidth
 	image={servicesHero}
 >
@@ -43,7 +94,7 @@ const grouped = Object.fromEntries(
 			<h1>Our Services</h1>
 			<p class="page-hero__lead">
 				Salon hair, hair fixing, nails, skin, and grooming — call us for
-				details and appointments.
+				details and appointments at Bangalore or Chennai.
 			</p>
 		</div>
 	</section>
@@ -91,7 +142,7 @@ const grouped = Object.fromEntries(
 							<VisualCard
 								href={`/services/${service.data.slug}`}
 								image={getServiceImage(
-									service.data.slug,
+									service.data.slug ?? "",
 									service.data.category,
 								)}
 								title={service.data.title}
@@ -103,6 +154,52 @@ const grouped = Object.fromEntries(
 				</section>
 			);
 		})
+	}
+
+	{
+		testimonials.length > 0 && (
+			<section class="section section--muted">
+				<div class="section__header">
+					<p class="eyebrow">Testimonials</p>
+					<h2>What clients say</h2>
+					<p class="muted">Real experiences from our Bangalore and Chennai guests.</p>
+				</div>
+				<div class="testimonials">
+					{testimonials.map((item) => (
+						<article class="testimonial-card">
+							{(item.videoSrc || item.imageSrc) && (
+								<div class="testimonial-card__media">
+									{item.videoSrc ? (
+										<video
+											src={item.videoSrc}
+											poster={item.imageSrc ?? undefined}
+											controls
+											playsinline
+											preload="metadata"
+										/>
+									) : (
+										<img
+											src={item.imageSrc!}
+											alt={item.imageAlt}
+											loading="lazy"
+										/>
+									)}
+								</div>
+							)}
+							<div class="testimonial-card__body">
+								{item.quote && (
+									<p class="testimonial-card__quote">“{item.quote}”</p>
+								)}
+								<p class="testimonial-card__meta">
+									{item.title}
+									{item.locationLabel ? ` · ${item.locationLabel}` : ""}
+								</p>
+							</div>
+						</article>
+					))}
+				</div>
+			</section>
+		)
 	}
 
 	<section class="section">

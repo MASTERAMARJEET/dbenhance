@@ -33,8 +33,16 @@
       "bucket_name": "dbenhance-media"
     }
   ],
+  "send_email": [
+    {
+      "name": "EMAIL",
+      "allowed_sender_addresses": ["bookings@dbenhance.com"],
+      "allowed_destination_addresses": ["dbenhance.blr@gmail.com"]
+    }
+  ],
   "vars": {
-    "EMDASH_SITE_URL": "https://dbenhance.com"
+    "EMDASH_SITE_URL": "https://dbenhance.com",
+    "BOOKING_FROM_EMAIL": "bookings@dbenhance.com"
   },
   "env": {
     "dev": {
@@ -63,9 +71,18 @@
           "remote": true
         }
       ],
+      "send_email": [
+        {
+          "name": "EMAIL",
+          "allowed_sender_addresses": ["bookings@dbenhance.com"],
+          "allowed_destination_addresses": ["dbenhance.blr@gmail.com"],
+          "remote": true
+        }
+      ],
       "vars": {
         // Must match config/dev.mjs (validated by pnpm check:dev-config)
-        "EMDASH_SITE_URL": "https://dbenhance-site-dev.masteramarjeetkumar.workers.dev"
+        "EMDASH_SITE_URL": "https://dbenhance-site-dev.masteramarjeetkumar.workers.dev",
+        "BOOKING_FROM_EMAIL": "bookings@dbenhance.com"
       }
     }
   }

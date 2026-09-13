@@ -3,38 +3,17 @@
 
 /// <reference types="emdash/locals" />
 
-import type {
-  ContentBylineCredit,
-  TaxonomyTerm,
-  PortableTextBlock,
-} from "emdash";
+import type { ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
 
 export interface FeaturedReel {
   id: string;
   slug: string | null;
   status: string;
-  sort_order?: number;
-  video?: {
-    id: string;
-    src?: string;
-    filename?: string;
-    mimeType?: string;
-    size?: number;
-    provider?: string;
-    meta?: Record<string, unknown>;
-  };
-  link: string;
   title: string;
-  thumbnail?: {
-    id: string;
-    src?: string;
-    alt?: string;
-    width?: number;
-    height?: number;
-    provider?: string;
-    previewUrl?: string;
-    meta?: Record<string, unknown>;
-  };
+  link: string;
+  thumbnail?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  video?: { id: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> };
+  sort_order?: number;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -48,18 +27,10 @@ export interface GalleryItem {
   status: string;
   title: string;
   link: string;
-  sort_order?: number;
+  thumbnail?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
   is_video?: boolean;
-  thumbnail?: {
-    id: string;
-    src?: string;
-    alt?: string;
-    width?: number;
-    height?: number;
-    provider?: string;
-    previewUrl?: string;
-    meta?: Record<string, unknown>;
-  };
+  location?: "bangalore" | "chennai" | "both";
+  sort_order?: number;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -85,16 +56,7 @@ export interface Post {
   slug: string | null;
   status: string;
   title: string;
-  featured_image?: {
-    id: string;
-    src?: string;
-    alt?: string;
-    width?: number;
-    height?: number;
-    provider?: string;
-    previewUrl?: string;
-    meta?: Record<string, unknown>;
-  };
+  featured_image?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
   content?: PortableTextBlock[];
   excerpt?: string;
   createdAt: Date;
@@ -108,10 +70,27 @@ export interface Service {
   id: string;
   slug: string | null;
   status: string;
-  excerpt?: string;
   title: string;
+  excerpt?: string;
   category: "salon-hair" | "hair-fixing" | "nail" | "skin" | "grooming";
   content?: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface Testimonial {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  quote?: string;
+  media?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  video?: { id: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> };
+  location?: "bangalore" | "chennai";
+  sort_order?: number;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -126,5 +105,6 @@ declare module "emdash" {
     pages: Page;
     posts: Post;
     services: Service;
+    testimonials: Testimonial;
   }
 }

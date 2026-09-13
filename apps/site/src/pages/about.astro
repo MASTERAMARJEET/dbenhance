@@ -4,7 +4,7 @@ import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
 import GalleryGrid from "../components/GalleryGrid.astro";
 import { getGalleryItems } from "../utils/social-content";
-import { getPageImage } from "../utils/site-media";
+import { ABOUT_SERVICE_COLLAGE, getPageImage } from "../utils/site-media";
 
 const { entry: page, cacheHint: pageCacheHint } = await getEmDashEntry(
 	"pages",
@@ -19,12 +19,11 @@ if (Astro.cache?.enabled) {
 
 const galleryItems = galleryResult.items.filter((item) => item.src);
 const aboutHero = getPageImage("aboutHero");
-const aboutAside = getPageImage("aboutAside");
 ---
 
 <Base
 	title="About"
-	description="Learn about DB Enhance, a full-service unisex salon in Padur, Chennai offering salon hair care, hair fixing, nail art, skin, and grooming services."
+	description="Learn about DB Enhance, a full-service unisex salon in Bangalore and Chennai offering salon hair care, hair fixing, nail art, skin, and grooming services."
 	image={aboutHero}
 	fullWidth
 	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
@@ -40,8 +39,8 @@ const aboutAside = getPageImage("aboutAside");
 			<p class="eyebrow eyebrow--light">DB Enhance</p>
 			<h1 {...page?.edit.title}>{page?.data.title ?? "About Us"}</h1>
 			<p class="page-hero__lead">
-				The Unisex Salon — your neighbourhood destination for complete personal
-				care in Padur, Chennai.
+				The Unisex Salon — your destination for complete personal care in
+				Bangalore and Chennai.
 			</p>
 		</div>
 	</section>
@@ -54,18 +53,31 @@ const aboutAside = getPageImage("aboutAside");
 				) : (
 					<div class="article__body">
 						<p>
-							DB Enhance — The Unisex Salon — is your neighbourhood destination
-							for complete personal care in Padur, Chennai.
+							DB Enhance — The Unisex Salon — is your destination for complete
+							personal care in Bangalore and Chennai. From non-surgical hair
+							fixing and extensions to nail care, bridal makeup, and everyday
+							salon services, we focus on results that feel natural and polished.
+						</p>
+						<p>
+							Visit us in Basavanagudi, Bengaluru, or Padur, Chennai — two
+							branches, one brand standard.
 						</p>
 					</div>
 				)}
 			</div>
 			<div class="split__media">
-				<img
-					src={aboutAside}
-					alt="Salon work at DB Enhance"
-					loading="lazy"
-				/>
+				<div class="service-collage" aria-label="DB Enhance services">
+					{
+						ABOUT_SERVICE_COLLAGE.map((asset) => (
+							<img
+								src={asset.src}
+								alt={asset.alt}
+								style={asset.position ? `object-position: ${asset.position}` : undefined}
+								loading="lazy"
+							/>
+						))
+					}
+				</div>
 			</div>
 		</div>
 	</section>
