@@ -199,7 +199,7 @@ Storage (`ctx.storage`) and KV (`ctx.kv`) are **always available** — no capabi
 **Email capabilities are distinct:**
 
 - `email:send` — for plugins that _consume_ email (call `ctx.email.send()`)
-- `hooks.email-transport:register` — for plugins that _deliver_ email (implement the transport, e.g. Resend, SMTP)
+- `hooks.email-transport:register` — for plugins that _deliver_ email (implement the transport, e.g. Cloudflare Email Service via a Workers `send_email` binding, SMTP)
 - `hooks.email-events:register` — for plugins that _observe or transform_ email (middleware hooks)
 
 ```typescript

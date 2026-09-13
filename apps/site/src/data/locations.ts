@@ -22,7 +22,6 @@ export const SOCIAL_LINKS = {
 export const SITE_EMAIL = "contact@dbenhance.com";
 
 export const BOOKING_LEAD_EMAILS = [
-	"rekha.dbenhance@gmail.com",
 	"dbenhance.blr@gmail.com",
 ] as const;
 

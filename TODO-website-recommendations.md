@@ -49,7 +49,7 @@ Checklist from [DB Enhance - Website Recommendations & Required Updates.pdf](./D
 
 - [x] Appointment form: Name, Mobile, Service dropdown, Message, Submit
 - [x] On success → `/thankyou`
-- [x] Email leads to `rekha.dbenhance@gmail.com` + `dbenhance.blr@gmail.com` (Resend)
+- [x] Email leads to `dbenhance.blr@gmail.com` (Cloudflare Email Service)
 
 ## Privacy
 
@@ -61,9 +61,9 @@ Checklist from [DB Enhance - Website Recommendations & Required Updates.pdf](./D
 - [ ] Upload testimonial videos/images
 - [ ] Optionally replace mosaic/about collage with final photos
 - [ ] Review/approve Privacy Policy text
-- [ ] Provide `RESEND_API_KEY` (and verified from-address) for production emails — see [`apps/site/resend.env.example`](apps/site/resend.env.example)
+- [ ] Onboard `dbenhance.com` for Email Sending + verify `dbenhance.blr@gmail.com` as destination
 
 ## Secrets / deploy
 
-- [ ] Set Resend secret in Wrangler / Cloudflare (`wrangler secret put RESEND_API_KEY`)
+- [ ] Confirm Cloudflare Email Sending + destination address (no Resend secret)
 - [ ] Deploy and smoke-test chrome, form, contact, privacy, nav

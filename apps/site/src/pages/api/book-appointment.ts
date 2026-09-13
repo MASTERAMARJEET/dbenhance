@@ -12,12 +12,8 @@ interface BookingBody {
   message?: string;
 }
 
-function getResendApiKey(): string | undefined {
-  return env.RESEND_API_KEY ?? import.meta.env.RESEND_API_KEY;
-}
-
 function getFromAddress(): string | undefined {
-  return env.RESEND_FROM_EMAIL ?? import.meta.env.RESEND_FROM_EMAIL;
+  return env.BOOKING_FROM_EMAIL ?? import.meta.env.BOOKING_FROM_EMAIL;
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -59,9 +55,8 @@ export const POST: APIRoute = async ({ request }) => {
     return Response.json({ error: "Message is too long." }, { status: 400 });
   }
 
-  const apiKey = getResendApiKey();
-  if (!apiKey) {
-    console.error("RESEND_API_KEY is not configured");
+  if (!env.EMAIL) {
+    console.error("EMAIL binding is not configured");
     return Response.json(
       {
         error:
@@ -71,9 +66,9 @@ export const POST: APIRoute = async ({ request }) => {
     );
   }
 
-  const from = getFromAddress();
-  if (!from) {
-    console.error("RESEND_FROM_EMAIL is not configured");
+  const fromAddress = getFromAddress();
+  if (!fromAddress) {
+    console.error("BOOKING_FROM_EMAIL is not configured");
     return Response.json(
       {
         error:
@@ -95,23 +90,16 @@ export const POST: APIRoute = async ({ request }) => {
     `Submitted at: ${new Date().toISOString()}`,
   ].join("\n");
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      from,
+  try {
+    await env.EMAIL.send({
       to: [...BOOKING_LEAD_EMAILS],
+      from: { email: fromAddress, name: "DB Enhance" },
       subject: `Appointment enquiry: ${service} (${location || "DB Enhance"})`,
       text,
-    }),
-  });
-
-  if (!res.ok) {
-    const errText = await res.text().catch(() => "");
-    console.error("Resend error", res.status, errText);
+    });
+  } catch (error) {
+    const err = error as Error & { code?: string };
+    console.error("Email send error", err.code, err.message);
     return Response.json(
       { error: "Could not send your enquiry. Please call us or try WhatsApp." },
       { status: 502 },

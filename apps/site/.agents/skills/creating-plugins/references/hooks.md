@@ -295,22 +295,24 @@ Returns: `EmailMessage | false`
 
 **Requires:** `hooks.email-transport:register` capability. **Exclusive hook** — exactly one provider is active.
 
-Implements email transport (e.g. Resend, SMTP, SES). Selected by the admin in Settings > Email.
+Implements email transport (e.g. Cloudflare Email Service, SMTP, SES). Selected by the admin in Settings > Email.
+
+The Worker must declare a `send_email` binding (e.g. `EMAIL`) in `wrangler.jsonc`. See the [Workers send() API](https://developers.cloudflare.com/email-service/api/send-emails/workers-api/).
 
 ```typescript
 definePlugin({
-	id: "emdash-resend",
-	capabilities: ["hooks.email-transport:register", "network:request"],
-	allowedHosts: ["api.resend.com"],
+	id: "emdash-cloudflare-email",
+	capabilities: ["hooks.email-transport:register"],
 	hooks: {
 		"email:deliver": {
 			exclusive: true,
-			handler: async ({ message }, ctx) => {
-				const apiKey = await ctx.kv.get("settings:apiKey");
-				await ctx.http!.fetch("https://api.resend.com/emails", {
-					method: "POST",
-					headers: { Authorization: `Bearer ${apiKey}` },
-					body: JSON.stringify({ to: message.to, subject: message.subject, text: message.text }),
+			handler: async ({ message }) => {
+				// `env.EMAIL` is the Cloudflare Email Service binding from wrangler.jsonc.
+				await env.EMAIL.send({
+					to: message.to,
+					from: message.from,
+					subject: message.subject,
+					text: message.text,
 				});
 			},
 		},
