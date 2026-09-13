@@ -4,10 +4,16 @@ import {
 	BOOKING_LEAD_EMAILS,
 	SITE_EMAIL,
 	getLocationsInOrder,
+	whatsappUrl,
 } from "../data/locations";
 
 const locations = getLocationsInOrder();
 const leadEmails = BOOKING_LEAD_EMAILS.join(", ");
+const lastUpdated = new Date("2026-09-13").toLocaleDateString("en-IN", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
 ---
 
 <Base
@@ -17,18 +23,14 @@ const leadEmails = BOOKING_LEAD_EMAILS.join(", ");
 	<article class="article privacy">
 		<p class="eyebrow">Legal</p>
 		<h1>Privacy Policy</h1>
-		<p class="muted">
-			<strong>Draft for review</strong> — last updated {new Date().toLocaleDateString("en-IN", { year: "numeric", month: "long", day: "numeric" })}.
-			This page describes how DB Enhance (“we”, “us”) handles personal information
-			collected through dbenhance.com and related booking channels.
-		</p>
+		<p class="muted">Last updated {lastUpdated}.</p>
 
 		<section>
 			<h2>Who we are</h2>
 			<p>
 				DB Enhance operates unisex salon locations in Bangalore and Chennai. Contact
-				details for each branch are listed on our
-				<a href="/contact">Contact</a> page. You can also email us at
+				details for each branch are listed on our {` `}
+				<a href="/contact">Contact</a> page. You can also email us at {` `}
 				<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a>.
 			</p>
 		</section>
@@ -48,7 +50,7 @@ const leadEmails = BOOKING_LEAD_EMAILS.join(", ");
 				</li>
 				<li>
 					<strong>Technical data</strong> such as approximate location derived from
-					IP address (when used for analytics or future city personalisation),
+					IP address (when used for analytics, location-aware services),
 					browser type, and pages visited — typically via cookies or similar tools.
 				</li>
 			</ul>
@@ -64,7 +66,7 @@ const leadEmails = BOOKING_LEAD_EMAILS.join(", ");
 			</ul>
 			<p>
 				Appointment form submissions are emailed to our salon team (including
-				{leadEmails}) so the relevant branch can follow up.
+				{` `}{leadEmails}) so the relevant branch can follow up.
 			</p>
 		</section>
 
@@ -100,7 +102,7 @@ const leadEmails = BOOKING_LEAD_EMAILS.join(", ");
 			<h2>Your choices</h2>
 			<p>
 				To access, correct, or ask us to delete personal information we hold about
-				you in connection with website enquiries, email
+				you in connection with website enquiries, email {` `}
 				<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a> or contact your preferred
 				branch:
 			</p>
@@ -109,9 +111,21 @@ const leadEmails = BOOKING_LEAD_EMAILS.join(", ");
 					locations.map((loc) => (
 						<li>
 							{loc.label}:{" "}
-							{loc.phones.map((p, i) => (
+							<span class="branch-contact-primary">
+								<a href={`tel:${loc.phones[0].tel}`}>{loc.phones[0].display}</a>
+								{" ("}
+								<a
+									href={whatsappUrl(loc)}
+									target="_blank"
+									rel="noopener noreferrer"
+								>
+									WhatsApp
+								</a>
+								{")"}
+							</span>
+							{loc.phones.slice(1).map((p) => (
 								<>
-									{i > 0 && ", "}
+									{", "}
 									<a href={`tel:${p.tel}`}>{p.display}</a>
 								</>
 							))}
@@ -134,7 +148,7 @@ const leadEmails = BOOKING_LEAD_EMAILS.join(", ");
 			<h2>Contact</h2>
 			<p>
 				Questions about this policy:
-				<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a> ·
+				{` `}<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a> {` `}·{` `}
 				<a href="/contact">Contact page</a>
 			</p>
 		</section>
@@ -157,5 +171,9 @@ const leadEmails = BOOKING_LEAD_EMAILS.join(", ");
 
 	.privacy li {
 		margin-bottom: var(--space-2);
+	}
+
+	.branch-contact-primary {
+		white-space: nowrap;
 	}
 </style>
