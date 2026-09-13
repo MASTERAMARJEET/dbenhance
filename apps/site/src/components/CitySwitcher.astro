@@ -23,6 +23,7 @@ const next = encodeURIComponent(currentPath);
         <a
           class="city-switcher__item"
           href={`/api/city?id=${id}&next=${next}`}
+          data-city-switch={id}
         >
           {LOCATIONS[id].label}
         </a>
@@ -30,3 +31,23 @@ const next = encodeURIComponent(currentPath);
     })
   }
 </div>
+
+<script>
+  import { cityCookieDocumentValue, isCityId } from "../utils/city-context";
+
+  const links = document.querySelectorAll<HTMLAnchorElement>(
+    "[data-city-switch]",
+  );
+
+  for (const link of links) {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      const id = link.dataset.citySwitch;
+      if (!isCityId(id)) return;
+
+      document.cookie = cityCookieDocumentValue(id);
+      const target = `${location.pathname}${location.search}`;
+      location.replace(target);
+    });
+  }
+</script>

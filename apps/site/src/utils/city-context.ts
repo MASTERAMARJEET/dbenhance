@@ -7,7 +7,7 @@ import {
 } from "../data/locations";
 
 export const CITY_COOKIE_NAME = "dbe_city";
-const COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
+export const CITY_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
 
 /** Salon coordinates for nearest-branch detection */
 const SALON_COORDS: Record<CityId, { lat: number; lon: number }> = {
@@ -33,7 +33,12 @@ export function parseCityCookie(cookieHeader: string | null): CityId | null {
 }
 
 export function cityCookieHeader(cityId: CityId): string {
-  return `${CITY_COOKIE_NAME}=${cityId}; Path=/; Max-Age=${COOKIE_MAX_AGE}; SameSite=Lax`;
+  return `${CITY_COOKIE_NAME}=${cityId}; Path=/; Max-Age=${CITY_COOKIE_MAX_AGE}; SameSite=Lax`;
+}
+
+/** Value for `document.cookie` (client-side city switch). */
+export function cityCookieDocumentValue(cityId: CityId): string {
+  return `${CITY_COOKIE_NAME}=${cityId}; path=/; max-age=${CITY_COOKIE_MAX_AGE}; samesite=lax`;
 }
 
 function haversineKm(
