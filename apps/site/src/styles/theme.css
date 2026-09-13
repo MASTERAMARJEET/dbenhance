@@ -225,15 +225,21 @@ time {
   white-space: nowrap;
 }
 
-.city-switcher__item:hover {
+a.city-switcher__item {
+  cursor: pointer;
+}
+
+a.city-switcher__item:hover {
   color: var(--color-text);
   text-decoration: none;
   background: var(--color-surface);
 }
 
-.city-switcher__item--active {
+.city-switcher__item--active,
+.city-switcher__item--active:hover {
   color: var(--color-surface);
   background: var(--color-accent);
+  cursor: default;
 }
 
 .site-header-phone {
