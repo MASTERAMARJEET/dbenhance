@@ -3,19 +3,23 @@ import { getEmDashEntry } from "emdash";
 import { PortableText } from "emdash/ui";
 import Base from "../layouts/Base.astro";
 import GalleryGrid from "../components/GalleryGrid.astro";
+import { getActiveCityId } from "../utils/city-context";
+import { getCityCopy } from "../utils/city-copy";
+import { setPageCache } from "../utils/page-cache";
 import { getGalleryItems } from "../utils/social-content";
 import { ABOUT_SERVICE_COLLAGE, getPageImage } from "../utils/site-media";
+
+const cityId = getActiveCityId(Astro.locals);
+const cityCopy = getCityCopy(cityId);
 
 const { entry: page, cacheHint: pageCacheHint } = await getEmDashEntry(
 	"pages",
 	"about",
 );
-const galleryResult = await getGalleryItems(6);
+const galleryResult = await getGalleryItems(6, cityId);
 
-if (Astro.cache?.enabled) {
-	Astro.cache.set(pageCacheHint);
-	Astro.cache.set(galleryResult.cacheHint);
-}
+setPageCache(Astro, pageCacheHint);
+setPageCache(Astro, galleryResult.cacheHint);
 
 const galleryItems = galleryResult.items.filter((item) => item.src);
 const aboutHero = getPageImage("aboutHero");
@@ -23,7 +27,7 @@ const aboutHero = getPageImage("aboutHero");
 
 <Base
 	title="About"
-	description="Learn about DB Enhance, a full-service unisex salon in Bangalore and Chennai offering salon hair care, hair fixing, nail art, skin, and grooming services."
+	description={cityCopy.aboutDescription}
 	image={aboutHero}
 	fullWidth
 	content={page ? { collection: "pages", id: page.data.id, slug: "about" } : undefined}
@@ -38,10 +42,7 @@ const aboutHero = getPageImage("aboutHero");
 		<div class="page-hero__content">
 			<p class="eyebrow eyebrow--light">DB Enhance</p>
 			<h1 {...page?.edit.title}>{page?.data.title ?? "About Us"}</h1>
-			<p class="page-hero__lead">
-				The Unisex Salon — your destination for complete personal care in
-				Bangalore and Chennai.
-			</p>
+			<p class="page-hero__lead">{cityCopy.aboutHeroLead}</p>
 		</div>
 	</section>
 
@@ -52,16 +53,11 @@ const aboutHero = getPageImage("aboutHero");
 					<PortableText value={page.data.content} />
 				) : (
 					<div class="article__body">
-						<p>
-							DB Enhance — The Unisex Salon — is your destination for complete
-							personal care in Bangalore and Chennai. From non-surgical hair
-							fixing and extensions to nail care, bridal makeup, and everyday
-							salon services, we focus on results that feel natural and polished.
-						</p>
-						<p>
-							Visit us in Basavanagudi, Bengaluru, or Padur, Chennai — two
-							branches, one brand standard.
-						</p>
+						{
+							cityCopy.aboutFallbackParagraphs.map((paragraph) => (
+								<p>{paragraph}</p>
+							))
+						}
 					</div>
 				)}
 			</div>

@@ -6,6 +6,10 @@ import {
 	SERVICE_CATEGORY_ORDER,
 	SERVICE_CATEGORIES,
 } from "../../utils/service-categories";
+import { getActiveCityId } from "../../utils/city-context";
+import { getCityCopy } from "../../utils/city-copy";
+import { matchesTestimonialLocation } from "../../utils/location-filter";
+import { setPageCache } from "../../utils/page-cache";
 import { CATEGORY_IMAGES, getPageImage, getServiceImage } from "../../utils/site-media";
 
 interface TestimonialView {
@@ -18,6 +22,8 @@ interface TestimonialView {
 }
 
 const servicesHero = getPageImage("servicesHero");
+const cityId = getActiveCityId(Astro.locals);
+const cityCopy = getCityCopy(cityId);
 
 const { entries: services, cacheHint } = await getEmDashCollection("services", {
 	status: "published",
@@ -57,16 +63,16 @@ try {
 				locationLabel: location
 					? `${location.charAt(0).toUpperCase()}${location.slice(1)}`
 					: null,
+				location,
 			};
-		});
+		})
+		.filter((item) => matchesTestimonialLocation(item.location, cityId));
 } catch {
 	// Collection may not exist until schema is migrated / types regenerated
 }
 
-if (Astro.cache?.enabled) {
-	Astro.cache.set(cacheHint);
-	if (testimonialsCacheHint) Astro.cache.set(testimonialsCacheHint);
-}
+setPageCache(Astro, cacheHint);
+if (testimonialsCacheHint) setPageCache(Astro, testimonialsCacheHint);
 
 const grouped = Object.fromEntries(
 	SERVICE_CATEGORY_ORDER.map((key) => [
@@ -78,7 +84,7 @@ const grouped = Object.fromEntries(
 
 <Base
 	title="Services"
-	description="Explore DB Enhance services — salon hair care, non-surgical hair fixing, nail art, facials, waxing, makeup, and bridal packages in Bangalore and Chennai."
+	description={cityCopy.servicesDescription}
 	fullWidth
 	image={servicesHero}
 >

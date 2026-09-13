@@ -26,7 +26,7 @@ export const BOOKING_LEAD_EMAILS = [
   "rekha.dbenhance@gmail.com",
 ] as const;
 
-/** Static default until geo city context ships (plan §11). */
+/** Fallback when geo/cookie city is unavailable (local dev, unknown region). */
 export const DEFAULT_CITY_ID: CityId = "bangalore";
 
 export const LOCATIONS: Record<CityId, SalonLocation> = {
@@ -94,8 +94,15 @@ export function getDefaultLocation(): SalonLocation {
   return LOCATIONS[DEFAULT_CITY_ID];
 }
 
-export function getLocationsInOrder(): SalonLocation[] {
-  return LOCATION_ORDER.map((id) => LOCATIONS[id]);
+export function getLocationsInOrder(activeCityId?: CityId): SalonLocation[] {
+  const order =
+    activeCityId && LOCATION_ORDER.includes(activeCityId)
+      ? [
+          activeCityId,
+          ...LOCATION_ORDER.filter((id) => id !== activeCityId),
+        ]
+      : LOCATION_ORDER;
+  return order.map((id) => LOCATIONS[id]);
 }
 
 export function whatsappUrl(

@@ -2,6 +2,7 @@
 // the Cron Trigger in wrangler.jsonc drives. PluginBridge is the sandbox
 // Durable Object, re-exported here so its binding resolves.
 import emdash, { PluginBridge } from "@emdash-cms/cloudflare/worker";
+import { requestWithCityVaryHeader } from "./utils/city-context";
 
 const APEX_HOST = "dbenhance.com";
 const WWW_HOST = `www.${APEX_HOST}`;
@@ -19,8 +20,9 @@ export default {
     if (!fetchHandler) {
       return new Response("Worker misconfigured", { status: 500 });
     }
+    const cityRequest = requestWithCityVaryHeader(request);
     return fetchHandler(
-      request as Parameters<typeof fetchHandler>[0],
+      cityRequest as Parameters<typeof fetchHandler>[0],
       env,
       ctx,
     );

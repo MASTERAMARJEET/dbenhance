@@ -97,8 +97,8 @@ Synced with [DB Enhance - Website Recommendations & Required Updates.pdf](./DB%2
 
 ## Follow-ups (not in PDF)
 
-- [ ] **Proper search:** restore working site search (fix LiveSearch URLs for pages + services, or dedicated search UI that never 404s) — PDF explicitly removed header search only; sidebar widget remains in seed for future use
-- [ ] **City geo + city-specific chrome:** approximate visitor location, Bangalore/Chennai switcher + cookie; default header phone / WhatsApp / hours / SEO from selected city (see `DEFAULT_CITY_ID` comment in `locations.ts`)
+- [x] **Proper search:** header LiveSearch with `routeMap` for `pages` + `services` (no `/pages/...` 404s); sidebar widget remains in seed for post pages
+- [x] **City geo + city-specific chrome:** cookie + Cloudflare geo, Bangalore/Chennai switcher, header phone / WhatsApp / hours / SEO / copy / gallery+testimonial filters from active city
 
 ---
 
@@ -128,6 +128,8 @@ Synced with [DB Enhance - Website Recommendations & Required Updates.pdf](./DB%2
 | --- | --- |
 | Locations, social, booking emails | `apps/site/src/data/locations.ts` |
 | Layout chrome | `apps/site/src/layouts/Base.astro` |
+| City context + switcher | `apps/site/src/middleware.ts`, `apps/site/src/utils/city-context.ts`, `apps/site/src/pages/api/city.ts`, `apps/site/src/components/CitySwitcher.astro` |
+| Site search | Header `LiveSearch` in `Base.astro` (`routeMap` for pages/services) |
 | Appointment UI + API | `apps/site/src/components/AppointmentFloat.astro`, `apps/site/src/pages/api/book-appointment.ts` |
 | Hero / collage images | `apps/site/src/data/site-images.json`, `apps/site/src/utils/site-media.ts` |
 | Email binding | `apps/site/wrangler.jsonc` (`send_email`, `BOOKING_FROM_EMAIL`) |

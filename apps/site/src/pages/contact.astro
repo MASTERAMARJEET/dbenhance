@@ -1,15 +1,19 @@
 ---
 import Base from "../layouts/Base.astro";
 import { getLocationsInOrder, whatsappUrl } from "../data/locations";
+import { getActiveCityId } from "../utils/city-context";
+import { getCityCopy } from "../utils/city-copy";
 import { getPageImage } from "../utils/site-media";
 
-const locations = getLocationsInOrder();
+const cityId = getActiveCityId(Astro.locals);
+const cityCopy = getCityCopy(cityId);
+const locations = getLocationsInOrder(cityId);
 const contactHero = getPageImage("contactHero");
 ---
 
 <Base
 	title="Contact"
-	description="Get in touch with DB Enhance in Bangalore and Chennai. Call, WhatsApp, or visit either salon to book hair, nail, or beauty services."
+	description={cityCopy.contactDescription}
 	fullWidth
 	image={contactHero}
 >
@@ -19,10 +23,7 @@ const contactHero = getPageImage("contactHero");
 		<div class="page-hero__content">
 			<p class="eyebrow eyebrow--light">Get in touch</p>
 			<h1>Contact Us</h1>
-			<p class="page-hero__lead">
-				Book an appointment at our Bangalore or Chennai salon, ask about services,
-				or enquire about bridal and package options.
-			</p>
+			<p class="page-hero__lead">{cityCopy.contactHeroLead}</p>
 		</div>
 	</section>
 
