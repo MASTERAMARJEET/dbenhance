@@ -6,7 +6,6 @@ Marketing site powered by [EmDash CMS](https://emdashcms.com/) on Cloudflare (Wo
 
 - Node.js 26.0.0 or later
 - pnpm 11.22.0 (pinned via `packageManager` in `package.json`)
-- `sqlite3` CLI (for `pnpm sync:data`)
 - `wrangler login` or `CLOUDFLARE_API_TOKEN` for remote operations
 
 ## Development
@@ -78,45 +77,9 @@ Deploy dev, note the workers.dev URL, set `EMDASH_SITE_URL` in `env.dev.vars`, t
 pnpm deploy:dev
 ```
 
-Create a separate dev admin account via the EmDash setup wizard on the workers.dev URL.
-
-Bootstrap dev content from prod:
-
-```bash
-pnpm sync:data --from prod --to dev
-pnpm sync:data --from prod --to dev --apply
-```
-
-## Sync app data between environments
-
-`pnpm sync:data` copies **EmDash app data only** (content, settings, menus, media metadata, etc.). It never copies admin users, auth tokens, or migration history. Sync runs only when source and target **schemas match**.
-
-Dry-run is the default:
-
-```bash
-pnpm sync:data --from prod --to dev
-pnpm sync:data --from dev --to local
-```
-
-Apply writes with `--apply`:
-
-```bash
-pnpm sync:data --from prod --to dev --apply
-pnpm sync:data --from dev --to local --apply
-pnpm sync:data --from local --to dev --apply
-pnpm sync:data --from dev --to prod --apply --force
-```
-
-Flags:
-
-- `--apply` — perform the sync (default is dry-run)
-- `--force` — required for prod targets, or prod → local
-- `--skip-media` — skip referenced R2 object copy
-
-Temporary export files land in `.prod-sync/` (gitignored).
+Create a separate dev admin account via the EmDash setup wizard on the workers.dev URL. Seed or enter content in dev as needed (EmDash admin backup download on prod is one option for manual migration).
 
 ## Monorepo layout
 
 - `apps/site` — EmDash + Astro site
-- `scripts/sync-data.mjs` — prod/dev/local app-data sync
 - `packages/` — reserved for shared packages
