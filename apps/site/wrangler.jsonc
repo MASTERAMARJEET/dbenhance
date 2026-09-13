@@ -33,6 +33,9 @@
       "bucket_name": "dbenhance-media"
     }
   ],
+  "vars": {
+    "EMDASH_SITE_URL": "https://dbenhance.com"
+  },
   "env": {
     "dev": {
       "name": "dbenhance-site-dev",
