@@ -142,8 +142,13 @@ const pageCtx = createPublicPageContext({
 					</p>
 				</div>
 				<div class="site-footer__hours">
-					<p>{defaultLocation.hours.weekdays}</p>
-					<p>{defaultLocation.hours.weekend}</p>
+					{
+						defaultLocation.hours.map((row) => (
+							<p>
+								{row.label}: {row.time.replaceAll(":00", "")}
+							</p>
+						))
+					}
 					<p>
 						<a href="/privacy">Privacy Policy</a>
 					</p>

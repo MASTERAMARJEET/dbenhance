@@ -1,15 +1,9 @@
 ---
 import Base from "../layouts/Base.astro";
-import {
-	SITE_EMAIL,
-	getDefaultLocation,
-	getLocationsInOrder,
-	whatsappUrl,
-} from "../data/locations";
+import { getLocationsInOrder, whatsappUrl } from "../data/locations";
 import { getPageImage } from "../utils/site-media";
 
 const locations = getLocationsInOrder();
-const defaultLocation = getDefaultLocation();
 const contactHero = getPageImage("contactHero");
 ---
 
@@ -50,56 +44,42 @@ const contactHero = getPageImage("contactHero");
 								</>
 							))}
 						</p>
-						<p>
+						<p class="contact-card__phones">
 							{
 								loc.phones.map((p, i) => (
-									<>
-										{i > 0 && <br />}
+									<span class="contact-card__phone-line">
 										<a href={`tel:${p.tel}`}>{p.display}</a>
-									</>
+										{i === 0 && (
+											<>
+												{" "}
+												<span class="muted">·</span>{" "}
+												<a
+													href={whatsappUrl(loc)}
+													target="_blank"
+													rel="noopener noreferrer"
+												>
+													WhatsApp
+												</a>
+											</>
+										)}
+									</span>
 								))
 							}
 						</p>
+						<h3 class="contact-card__subhead">Opening hours</h3>
+						<ul class="hours-list">
+							{
+								loc.hours.map((row) => (
+									<li class="hours-list__item">
+										<span class="hours-list__label">{row.label}</span>
+										<span class="hours-list__value">{row.time}</span>
+									</li>
+								))
+							}
+						</ul>
 					</section>
 				))
 			}
-
-			<section class="contact-card">
-				<h2>Call, email & WhatsApp</h2>
-				<p>
-					{
-						locations.flatMap((loc) =>
-							loc.phones.map((p) => ({ loc: loc.label, ...p })),
-						).map((p, i) => (
-							<>
-								{i > 0 && <br />}
-								<span class="muted">{p.loc}:</span>{" "}
-								<a href={`tel:${p.tel}`}>{p.display}</a>
-							</>
-						))
-					}
-					<br />
-					<a href={`mailto:${SITE_EMAIL}`}>{SITE_EMAIL}</a>
-					<br />
-					<a href={whatsappUrl(defaultLocation)} target="_blank" rel="noopener noreferrer">
-						WhatsApp ({defaultLocation.label})
-					</a>
-				</p>
-			</section>
-
-			<section class="contact-card">
-				<h2>Opening hours</h2>
-				<ul class="hours-list">
-					<li class="hours-list__item">
-						<span class="hours-list__label">Monday – Friday</span>
-						<span class="hours-list__value">10:00 AM – 9:00 PM</span>
-					</li>
-					<li class="hours-list__item">
-						<span class="hours-list__label">Saturday & Sunday</span>
-						<span class="hours-list__value">9:00 AM – 9:00 PM</span>
-					</li>
-				</ul>
-			</section>
 		</div>
 
 		<div class="contact-maps">
