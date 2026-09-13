@@ -261,7 +261,7 @@ time {
   position: fixed;
   z-index: 40;
   right: var(--space-5);
-  bottom: calc(var(--space-5) + 4.25rem);
+  bottom: var(--space-5);
   appearance: none;
   border: none;
   cursor: pointer;
@@ -283,7 +283,7 @@ time {
   position: fixed;
   z-index: 40;
   right: var(--space-5);
-  bottom: var(--space-5);
+  bottom: calc(var(--space-5) + 3.875rem);
   display: grid;
   place-items: center;
   width: 3.25rem;
