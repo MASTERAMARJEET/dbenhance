@@ -5,13 +5,14 @@ import { d1, kvCache, r2 } from "@emdash-cms/cloudflare";
 import { defineConfig } from "astro/config";
 import emdash, { memoryCache } from "emdash/astro";
 import { DEV_EMDASH_SITE_URL } from "./config/dev.mjs";
+import { PROD_EMDASH_SITE_URL } from "./config/prod.mjs";
 import { gtmPlugin } from "./src/plugins/gtm/index.ts";
 
 const cloudflareEnv = process.env.CLOUDFLARE_ENV;
 const useKvObjectCache = cloudflareEnv === "dev" || !import.meta.env.DEV;
 const siteUrl =
   process.env.EMDASH_SITE_URL ??
-  (cloudflareEnv === "dev" ? DEV_EMDASH_SITE_URL : "https://dbenhance.com");
+  (cloudflareEnv === "dev" ? DEV_EMDASH_SITE_URL : PROD_EMDASH_SITE_URL);
 
 export default defineConfig({
   output: "server",

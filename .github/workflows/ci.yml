@@ -29,6 +29,8 @@ jobs:
 
       - run: pnpm build:prod
 
+      - run: pnpm --filter site exec node scripts/check-build-site-url.mjs --after-build
+
       - run: pnpm build:dev
 
       - run: pnpm --filter site typecheck

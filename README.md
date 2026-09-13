@@ -47,7 +47,9 @@ Dev (workers.dev):
 pnpm deploy:site:dev
 ```
 
-`deploy:site:dev` sets `CLOUDFLARE_ENV=dev` and `EMDASH_SITE_URL` from `apps/site/config/dev.mjs` for the Astro build, then deploys with Wrangler 4.11+ flattened `env.dev` bindings. Do not pass `--config dist/server/wrangler.json` manually.
+`deploy:site:dev` sets `CLOUDFLARE_ENV=dev` and `EMDASH_SITE_URL` from `apps/site/config/dev.mjs` for the Astro build, then runs `wrangler deploy --env dev`. **Do not** run a dev build followed by a default `wrangler deploy` — that publishes a dev-configured bundle to production.
+
+`deploy:site:prod` clears inherited dev env vars, builds with `apps/site/config/prod.mjs`, verifies the bundle does not contain the dev URL, then deploys the default Worker.
 
 Requires `wrangler login` or a `CLOUDFLARE_API_TOKEN`. Set `EMDASH_ENCRYPTION_KEY` in Cloudflare Worker secrets for each environment (use a **different** key for dev than production).
 
