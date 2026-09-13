@@ -7,24 +7,24 @@ const APEX_HOST = "dbenhance.com";
 const WWW_HOST = `www.${APEX_HOST}`;
 
 export default {
-	...emdash,
-	fetch(request: Request, env: Env, ctx: ExecutionContext) {
-		const url = new URL(request.url);
-		if (url.hostname === WWW_HOST) {
-			url.hostname = APEX_HOST;
-			url.protocol = "https:";
-			return Response.redirect(url.toString(), 301);
-		}
-		const fetchHandler = emdash.fetch;
-		if (!fetchHandler) {
-			return new Response("Worker misconfigured", { status: 500 });
-		}
-		return fetchHandler(
-			request as Parameters<typeof fetchHandler>[0],
-			env,
-			ctx,
-		);
-	},
+  ...emdash,
+  fetch(request: Request, env: Env, ctx: ExecutionContext) {
+    const url = new URL(request.url);
+    if (url.hostname === WWW_HOST) {
+      url.hostname = APEX_HOST;
+      url.protocol = "https:";
+      return Response.redirect(url.toString(), 301);
+    }
+    const fetchHandler = emdash.fetch;
+    if (!fetchHandler) {
+      return new Response("Worker misconfigured", { status: 500 });
+    }
+    return fetchHandler(
+      request as Parameters<typeof fetchHandler>[0],
+      env,
+      ctx,
+    );
+  },
 };
 
 export { PluginBridge };
