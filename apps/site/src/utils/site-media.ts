@@ -134,10 +134,10 @@ const SERVICE_IMAGES: Record<string, ImageAsset> = {
 };
 
 export function getServiceImage(
-  slug: string,
+  slug: string | null | undefined,
   category?: string | null,
 ): ImageAsset {
-  if (SERVICE_IMAGES[slug]) return SERVICE_IMAGES[slug];
+  if (slug && SERVICE_IMAGES[slug]) return SERVICE_IMAGES[slug];
 
   const categoryKey = category as ServiceCategory | undefined;
   if (categoryKey && CATEGORY_IMAGES[categoryKey]) {

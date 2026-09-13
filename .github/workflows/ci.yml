@@ -29,3 +29,5 @@ jobs:
       - run: pnpm build
 
       - run: pnpm --filter site build:dev
+
+      - run: pnpm --filter site typecheck

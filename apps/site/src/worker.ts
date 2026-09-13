@@ -15,7 +15,15 @@ export default {
 			url.protocol = "https:";
 			return Response.redirect(url.toString(), 301);
 		}
-		return emdash.fetch(request, env, ctx);
+		const fetchHandler = emdash.fetch;
+		if (!fetchHandler) {
+			return new Response("Worker misconfigured", { status: 500 });
+		}
+		return fetchHandler(
+			request as Parameters<typeof fetchHandler>[0],
+			env,
+			ctx,
+		);
 	},
 };
 

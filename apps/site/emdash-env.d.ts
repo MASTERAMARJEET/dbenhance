@@ -50,6 +50,30 @@ export interface Page {
   terms?: Record<string, TaxonomyTerm[]>;
 }
 
+export interface Post {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  featured_image?: {
+    id: string;
+    src?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+    provider?: string;
+    previewUrl?: string;
+    meta?: Record<string, unknown>;
+  };
+  content?: PortableTextBlock[];
+  excerpt?: string;
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
 export interface Service {
   id: string;
   slug: string | null;
@@ -70,6 +94,7 @@ declare module "emdash" {
     featured_reels: FeaturedReel;
     gallery_items: GalleryItem;
     pages: Page;
+    posts: Post;
     services: Service;
   }
 }
