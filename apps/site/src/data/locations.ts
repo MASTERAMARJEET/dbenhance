@@ -21,7 +21,10 @@ export const SOCIAL_LINKS = {
 
 export const SITE_EMAIL = "contact@dbenhance.com";
 
-export const BOOKING_LEAD_EMAILS = ["dbenhance.blr@gmail.com"] as const;
+export const BOOKING_LEAD_EMAILS = [
+  "dbenhance.blr@gmail.com",
+  "rekha.dbenhance@gmail.com",
+] as const;
 
 /** Static default until geo city context ships (plan §11). */
 export const DEFAULT_CITY_ID: CityId = "bangalore";

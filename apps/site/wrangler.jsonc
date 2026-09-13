@@ -37,7 +37,10 @@
     {
       "name": "EMAIL",
       "allowed_sender_addresses": ["bookings@dbenhance.com"],
-      "allowed_destination_addresses": ["dbenhance.blr@gmail.com"]
+      "allowed_destination_addresses": [
+        "dbenhance.blr@gmail.com",
+        "rekha.dbenhance@gmail.com"
+      ]
     }
   ],
   "vars": {
@@ -75,7 +78,10 @@
         {
           "name": "EMAIL",
           "allowed_sender_addresses": ["bookings@dbenhance.com"],
-          "allowed_destination_addresses": ["dbenhance.blr@gmail.com"],
+          "allowed_destination_addresses": [
+            "dbenhance.blr@gmail.com",
+            "rekha.dbenhance@gmail.com"
+          ],
           "remote": true
         }
       ],
