@@ -72,7 +72,7 @@ wrangler kv namespace create CACHE --env dev
 wrangler secret put EMDASH_ENCRYPTION_KEY --env dev
 ```
 
-**Booking email (Cloudflare Email Service):** Onboard `dbenhance.com` under **Email Service → Email Sending**, then verify `dbenhance.blr@gmail.com` under **Email Routing → Destination Addresses**. The Worker uses a `send_email` binding (`EMAIL`) and `BOOKING_FROM_EMAIL=bookings@dbenhance.com` from `wrangler.jsonc`.
+**Booking email (Cloudflare Email Service):** Onboard `dbenhance.com` under **Email Service → Email Sending**, then verify each lead inbox under **Email Routing → Destination Addresses** (`dbenhance.blr@gmail.com`, `rekha.dbenhance@gmail.com`). The Worker uses a `send_email` binding (`EMAIL`) and `BOOKING_FROM_EMAIL=bookings@dbenhance.com` from `wrangler.jsonc`; destinations must match `BOOKING_LEAD_EMAILS` in `apps/site/src/data/locations.ts`.
 
 Copy the returned D1 UUID and KV namespace id into `apps/site/wrangler.jsonc` under `env.dev`. Set the workers.dev URL in **both** `apps/site/config/dev.mjs` and `env.dev.vars.EMDASH_SITE_URL`, then run:
 
