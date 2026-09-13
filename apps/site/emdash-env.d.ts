@@ -3,17 +3,38 @@
 
 /// <reference types="emdash/locals" />
 
-import type { ContentBylineCredit, TaxonomyTerm, PortableTextBlock } from "emdash";
+import type {
+  ContentBylineCredit,
+  TaxonomyTerm,
+  PortableTextBlock,
+} from "emdash";
 
 export interface FeaturedReel {
   id: string;
   slug: string | null;
   status: string;
   sort_order?: number;
-  video?: { id: string; src?: string; filename?: string; mimeType?: string; size?: number; provider?: string; meta?: Record<string, unknown> };
+  video?: {
+    id: string;
+    src?: string;
+    filename?: string;
+    mimeType?: string;
+    size?: number;
+    provider?: string;
+    meta?: Record<string, unknown>;
+  };
   link: string;
   title: string;
-  thumbnail?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  thumbnail?: {
+    id: string;
+    src?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+    provider?: string;
+    previewUrl?: string;
+    meta?: Record<string, unknown>;
+  };
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -29,7 +50,16 @@ export interface GalleryItem {
   link: string;
   sort_order?: number;
   is_video?: boolean;
-  thumbnail?: { id: string; src?: string; alt?: string; width?: number; height?: number; provider?: string; previewUrl?: string; meta?: Record<string, unknown> };
+  thumbnail?: {
+    id: string;
+    src?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+    provider?: string;
+    previewUrl?: string;
+    meta?: Record<string, unknown>;
+  };
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -43,6 +73,30 @@ export interface Page {
   status: string;
   title: string;
   content?: PortableTextBlock[];
+  createdAt: Date;
+  updatedAt: Date;
+  publishedAt: Date | null;
+  bylines?: ContentBylineCredit[];
+  terms?: Record<string, TaxonomyTerm[]>;
+}
+
+export interface Post {
+  id: string;
+  slug: string | null;
+  status: string;
+  title: string;
+  featured_image?: {
+    id: string;
+    src?: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+    provider?: string;
+    previewUrl?: string;
+    meta?: Record<string, unknown>;
+  };
+  content?: PortableTextBlock[];
+  excerpt?: string;
   createdAt: Date;
   updatedAt: Date;
   publishedAt: Date | null;
@@ -70,6 +124,7 @@ declare module "emdash" {
     featured_reels: FeaturedReel;
     gallery_items: GalleryItem;
     pages: Page;
+    posts: Post;
     services: Service;
   }
 }

@@ -18,10 +18,14 @@
     ]
   },
   "scripts": {
-    "build": "turbo run build",
+    "build:prod": "turbo run build:prod",
+    "build:dev": "pnpm --filter site build:dev",
     "dev": "turbo run dev --parallel",
-    "dev:remote": "pnpm --filter site dev:remote",
-    "deploy:site": "turbo run site#deploy",
+    "deploy:site:prod": "turbo run site#deploy:prod",
+    "deploy:site:dev": "pnpm --filter site deploy:dev",
+    "check:prod-config": "pnpm --filter site check:prod-config",
+    "check:dev-config": "pnpm --filter site check:dev-config",
+    "typecheck": "pnpm --filter site typecheck",
     "clean": "rimraf **/node_modules **/.turbo **/dist **/.wrangler",
     "clean:install": "pnpm clean && pnpm install"
   },

@@ -11,7 +11,7 @@ After starting dev server, open `/_emdash/admin` to manage content.
 ## Deploy
 
 ```bash
-pnpm deploy
+pnpm deploy:prod
 ```
 
-From repo root: `pnpm deploy:site`
+From repo root: `pnpm deploy:site:prod`

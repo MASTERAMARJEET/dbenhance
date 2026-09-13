@@ -1,9 +1,9 @@
 {
   "$schema": "https://turborepo.org/schema.json",
   "tasks": {
-    "build": {
+    "build:prod": {
       "dependsOn": [
-        "^build"
+        "^build:prod"
       ],
       "outputs": [
         "dist/**",
@@ -13,9 +13,9 @@
     "dev": {
       "cache": false
     },
-    "deploy": {
+    "deploy:prod": {
       "dependsOn": [
-        "build"
+        "build:prod"
       ],
       "cache": false
     }
