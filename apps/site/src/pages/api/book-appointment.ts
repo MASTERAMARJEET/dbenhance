@@ -93,7 +93,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     await env.EMAIL.send({
       to: [...BOOKING_LEAD_EMAILS],
-      from: { email: fromAddress, name: "DB Enhance" },
+      from: { email: fromAddress, name: "DB Enhance Bookings" },
       subject: `Appointment enquiry: ${service} (${location || "DB Enhance"})`,
       text,
     });
